@@ -19,3 +19,8 @@ func _ready():
 func _on_registerButton_pressed():
 	get_tree().change_scene("res://Scenes/register.tscn")
 	pass # Replace with function body.
+
+
+func _on_loginButton_pressed():
+	get_tree().change_scene("res://Scenes/login.tscn")
+	pass # Replace with function body.
