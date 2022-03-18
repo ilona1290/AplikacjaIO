@@ -24,3 +24,8 @@ func _on_registerButton_pressed():
 func _on_loginButton_pressed():
 	get_tree().change_scene("res://Scenes/login.tscn")
 	pass # Replace with function body.
+
+
+func _on_profileButton_pressed():
+	get_tree().change_scene("res://Scenes/profile.tscn")
+	pass # Replace with function body.
