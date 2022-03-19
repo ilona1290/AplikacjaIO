@@ -5,6 +5,8 @@ extends Control
 #onready var XXXInput = $background/Informations/XXX/XXXInput
 #onready var XXXValue = $background/Informations/XXX/XXXValue
 
+onready var http : HTTPRequest = $HTTPRequest
+
 onready var NameLabel = $background/Informations/Name/NameInput
 onready var NameInput = $background/Informations/Name/NameInput
 onready var NameValue = $background/Informations/Name/NameValue
@@ -27,7 +29,12 @@ onready var Notification = $background/Notification
 onready var Avatar = $background/Avatar
 onready var AvatarFileDialog = $AvatarFileDialog
 
+var new_profile := false
 var EditMode : bool = false
+var information_sent = false
+
+
+
 
 var UserAccount : UserProfile = UserProfile.new()
 
@@ -38,15 +45,10 @@ func _ready():
 	#UserAccount.load_from_json(file.get_as_text())
 	#file.close()
 	
-	NameValue.text = UserAccount.Name
-	SurnameValue.text = UserAccount.Surname
-	BankAccountValue.text = UserAccount.BankAccount
-	TelephoneValue.text = UserAccount.Telephone
+	Firebase.get_document("users/%s" % Firebase.user_info.id, http)
+	#Firebase.save_document("users?documentId=%s" % Firebase.user_info.id, UserAccount.to_dictionary() ,http)
+	#UserAccount.Name = "ddewdwe"
 	
-	NameInput.text = UserAccount.Name
-	SurnameInput.text = UserAccount.Surname
-	BankAccountInput.text = UserAccount.BankAccount
-	TelephoneInput.text = UserAccount.Telephone
 	
 	var AvatarImg : Image = Image.new()
 	if UserAccount.Avatar == []:
@@ -94,7 +96,13 @@ func _on_EditButton_pressed():
 		UserAccount.Telephone = TelephoneInput.text
 		
 		Notification.text = "Zapisano zmiany"
-		
+		match new_profile:
+			true:
+				Firebase.save_document("users?documentId=%s" % Firebase.user_info.id, UserAccount.to_dictionary(), http)
+			false:
+				Firebase.update_document("users/%s" % Firebase.user_info.id, UserAccount.to_dictionary(), http)
+
+		information_sent = true
 		EditMode = false
 		EditButton.text = "Edytuj"
 		
@@ -103,6 +111,8 @@ func _on_EditButton_pressed():
 		#file.open("res://profile.dat", File.WRITE)
 		#file.store_string(UserAccount.to_json())
 		#file.close()
+		
+		
 
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://Scenes/main.tscn")
@@ -121,3 +131,36 @@ func _on_AvatarFileDialog_confirmed():
 	Avatar.texture = NewAvatarTexture
 	
 	UserAccount.Avatar = Avatar.texture.get("image").save_png_to_buffer()
+
+
+
+
+
+func _on_HTTPRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
+	
+	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
+	match response_code:
+		404:
+			Notification.text = "Please, enter your information"
+			new_profile = true
+			return
+		200:
+			if information_sent:
+				Notification.text = "Information saved successfully"
+				information_sent = false
+			UserAccount.Name = result_body.fields["Name"]
+			UserAccount.BankAccount = result_body.fields["BankAccount"]
+			UserAccount.Surname = result_body.fields["Surname"]
+			UserAccount.Telephone = result_body.fields["Telephone"]
+			#self.UserAccount.set_profile(result_body.fields)
+			print(UserAccount.BankAccount)
+			#DO POPRAWY
+			BankAccountValue.text = UserAccount.BankAccount.substr(13, UserAccount.BankAccount.length() - 14)
+			NameValue.text = UserAccount.Name.substr(13, UserAccount.Name.length() - 14)
+			SurnameValue.text = UserAccount.Surname.substr(13, UserAccount.Surname.length() - 14)
+			TelephoneValue.text = UserAccount.Telephone.substr(13, UserAccount.Telephone.length() - 14)
+			NameInput.text = UserAccount.Name.substr(13, UserAccount.Name.length() - 14)
+			SurnameInput.text = UserAccount.Surname.substr(13, UserAccount.Surname.length() - 14)
+			BankAccountInput.text = UserAccount.BankAccount.substr(13, UserAccount.BankAccount.length() - 14)
+			TelephoneInput.text = UserAccount.Telephone.substr(13, UserAccount.Telephone.length() - 14)
+

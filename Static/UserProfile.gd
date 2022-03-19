@@ -23,3 +23,8 @@ func load_from_json(json : String):
 	BankAccount = jsonParse.result["BankAccount"]
 	Telephone = jsonParse.result["Telephone"]
 	Avatar = jsonParse.result["Avatar"]
+
+
+func to_dictionary() -> Dictionary:
+	return {"Name": {"stringValue": Name}, "Surname": {"stringValue": Surname}, "BankAccount": {"stringValue": BankAccount}, "Telephone": {"stringValue": Telephone}}
+
