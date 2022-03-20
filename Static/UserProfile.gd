@@ -26,5 +26,9 @@ func load_from_json(json : String):
 
 
 func to_dictionary() -> Dictionary:
-	return {"Name": {"stringValue": Name}, "Surname": {"stringValue": Surname}, "BankAccount": {"stringValue": BankAccount}, "Telephone": {"stringValue": Telephone}}
+	return {"Name": {"stringValue": Name}, 
+	"Surname": {"stringValue": Surname}, 
+	"BankAccount": {"stringValue": BankAccount}, 
+	"Telephone": {"stringValue": Telephone}}
+	#"Avatar": {"stringValue": String(Avatar)}}
 

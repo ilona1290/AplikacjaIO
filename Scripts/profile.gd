@@ -148,19 +148,26 @@ func _on_HTTPRequest_request_completed(result: int, response_code: int, headers:
 			if information_sent:
 				Notification.text = "Information saved successfully"
 				information_sent = false
-			UserAccount.Name = result_body.fields["Name"]
-			UserAccount.BankAccount = result_body.fields["BankAccount"]
-			UserAccount.Surname = result_body.fields["Surname"]
-			UserAccount.Telephone = result_body.fields["Telephone"]
+			UserAccount.Name = result_body.fields["Name"].stringValue
+			UserAccount.BankAccount = result_body.fields["BankAccount"].stringValue
+			UserAccount.Surname = result_body.fields["Surname"].stringValue
+			UserAccount.Telephone = result_body.fields["Telephone"].stringValue
+			#print(result_body.fields["Avatar"].stringValue)
+			#UserAccount.Avatar = result_body.fields["Avatar"].stringValue
 			#self.UserAccount.set_profile(result_body.fields)
-			print(UserAccount.BankAccount)
-			#DO POPRAWY
-			BankAccountValue.text = UserAccount.BankAccount.substr(13, UserAccount.BankAccount.length() - 14)
-			NameValue.text = UserAccount.Name.substr(13, UserAccount.Name.length() - 14)
-			SurnameValue.text = UserAccount.Surname.substr(13, UserAccount.Surname.length() - 14)
-			TelephoneValue.text = UserAccount.Telephone.substr(13, UserAccount.Telephone.length() - 14)
-			NameInput.text = UserAccount.Name.substr(13, UserAccount.Name.length() - 14)
-			SurnameInput.text = UserAccount.Surname.substr(13, UserAccount.Surname.length() - 14)
-			BankAccountInput.text = UserAccount.BankAccount.substr(13, UserAccount.BankAccount.length() - 14)
-			TelephoneInput.text = UserAccount.Telephone.substr(13, UserAccount.Telephone.length() - 14)
+			
+			BankAccountValue.text = UserAccount.BankAccount
+			NameValue.text = UserAccount.Name
+			SurnameValue.text = UserAccount.Surname
+			TelephoneValue.text = UserAccount.Telephone
+			NameInput.text = UserAccount.Name
+			SurnameInput.text = UserAccount.Surname
+			BankAccountInput.text = UserAccount.BankAccount
+			TelephoneInput.text = UserAccount.Telephone
+			#var NewAvatarImage : Image = Image.new()
+			#NewAvatarImage.load_png_from_buffer(UserAccount.Avatar)
+			#var NewAvatarTexture : ImageTexture = ImageTexture.new()
+			#NewAvatarTexture.create_from_image(NewAvatarImage)
+			#Avatar.texture = NewAvatarTexture
+			
 
