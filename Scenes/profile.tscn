@@ -203,8 +203,8 @@ dialog_hide_on_ok = true
 mode = 0
 access = 1
 filters = PoolStringArray( "*.png" )
-current_dir = "user://C:/Users/apias/Desktop/AplikacjaIO"
-current_path = "user://C:/Users/apias/Desktop/AplikacjaIO/"
+current_dir = "user://C:/Users/HP/Desktop/AplikacjaIO"
+current_path = "user://C:/Users/HP/Desktop/AplikacjaIO/"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 

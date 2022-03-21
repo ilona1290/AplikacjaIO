@@ -1,0 +1,34 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/groups.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/Theme.tres" type="Theme" id=2]
+
+[node name="groups" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="background" type="ColorRect" parent="."]
+margin_right = 1080.0
+margin_bottom = 1920.0
+color = Color( 0.027451, 0.572549, 0.596078, 1 )
+
+[node name="AddGroupButton" type="Button" parent="background"]
+margin_right = 200.0
+margin_bottom = 100.0
+theme = ExtResource( 2 )
+text = "Dodaj Grupę"
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest2" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest3" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest4" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="background/AddGroupButton" to="." method="_on_AddGroupButton_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
+[connection signal="request_completed" from="HTTPRequest2" to="." method="_on_HTTPRequest2_request_completed"]
+[connection signal="request_completed" from="HTTPRequest3" to="." method="_on_HTTPRequest3_request_completed"]
+[connection signal="request_completed" from="HTTPRequest4" to="." method="_on_HTTPRequest4_request_completed"]

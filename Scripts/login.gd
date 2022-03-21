@@ -25,6 +25,7 @@ func _on_LoginButton_pressed():
 
 func _on_HTTPRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray):
 	var response_body := JSON.parse(body.get_string_from_ascii())
+	#print(response_body.result)
 	if response_code != 200:
 		notification.text = response_body.result.error.message.capitalize()
 	else:

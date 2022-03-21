@@ -29,3 +29,13 @@ func _on_loginButton_pressed():
 func _on_profileButton_pressed():
 	get_tree().change_scene("res://Scenes/profile.tscn")
 	pass # Replace with function body.
+
+
+func _on_friendsButton_pressed():
+	get_tree().change_scene("res://Scenes/friends.tscn")
+	pass # Replace with function body.
+
+
+func _on_groupButton_pressed():
+	get_tree().change_scene("res://Scenes/groups.tscn")
+	pass # Replace with function body.
