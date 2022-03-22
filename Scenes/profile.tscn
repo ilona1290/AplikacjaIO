@@ -197,14 +197,15 @@ valign = 1
 [node name="AvatarFileDialog" type="FileDialog" parent="."]
 margin_right = 360.0
 margin_bottom = 640.0
+rect_min_size = Vector2( 150, 52.5 )
 rect_scale = Vector2( 3, 3 )
 window_title = "Otwórz plik"
 dialog_hide_on_ok = true
 mode = 0
 access = 1
 filters = PoolStringArray( "*.png" )
-current_dir = "user://C:/Users/HP/Desktop/AplikacjaIO"
-current_path = "user://C:/Users/HP/Desktop/AplikacjaIO/"
+current_dir = "user://C:/Users/Student/Desktop/AplikacjaIO"
+current_path = "user://C:/Users/Student/Desktop/AplikacjaIO/"
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 

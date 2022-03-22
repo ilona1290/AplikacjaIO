@@ -1,5 +1,6 @@
 extends Control
 
+var friendCardScene = preload("res://Scenes/friendCard.tscn")
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -9,6 +10,10 @@ onready var http : HTTPRequest = $HTTPRequest
 onready var http2 : HTTPRequest = $HTTPRequest2
 onready var http3 : HTTPRequest = $HTTPRequest3
 onready var http4 : HTTPRequest = $HTTPRequest4
+onready var http5 : HTTPRequest = $HTTPRequest5
+
+onready var FriendList = $background/ScrollContainer/VBoxContainer
+
 var newGroup := false
 var groupId
 var counter = 0
@@ -19,9 +24,20 @@ var members = [{"stringValue": "Dh3MPZlLTQQlhHSp84vW4zQItHk2"},
 var friends : Array = []
 var groups : Array = []
 
+var newGroupFriends : Array = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+	Firebase.get_document("userFriendsGroups/%s" % Firebase.user_info.id, http5)
+	yield(get_tree().create_timer(0.5), "timeout")
+	print("friends: ", friends)
+	for f in friends:
+		var tmpFriendCard = friendCardScene.instance()
+		tmpFriendCard.get_node("background/Name").text = f
+		tmpFriendCard.get_node("background").connect("gui_input", self, "_onPressFriendCard", [f])
+		tmpFriendCard.name = f
+		FriendList.add_child(tmpFriendCard)
+		
 	pass # Replace with function body.
 
 func _on_AddGroupButton_pressed():
@@ -121,7 +137,30 @@ static func v4():
 #	pass
 
 
+func _on_HTTPRequest5_request_completed(result, response_code, headers, body):
+	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
+	match response_code:
+		404:
+			return
+		200:
+			print(result_body.fields["Friends"].arrayValue.values)
+			for id in result_body.fields["Friends"].arrayValue.values:
+				friends.append(id.stringValue)
+			#for i in range(friends.size()):
+				#var tmp = friendCardScene.instance()
+				#tmp.get_node("background/Name").text = friends[i].stringValue
+				#FriendList.add_child(tmp)
+	#Notification.text = "Wyslano zaproszenie"
+	pass # Replace with function body.
 
 
-
-
+func _onPressFriendCard(event, id):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == BUTTON_LEFT:
+				if newGroupFriends.has(id):
+					newGroupFriends.erase(id)
+					FriendList.get_node(id).modulate = Color("#ffffff")
+				else:
+					newGroupFriends.append(id)
+					FriendList.get_node(id).modulate = Color("#aaaaaa")

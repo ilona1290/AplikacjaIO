@@ -19,6 +19,14 @@ margin_bottom = 100.0
 theme = ExtResource( 2 )
 text = "Dodaj Grupę"
 
+[node name="ScrollContainer" type="ScrollContainer" parent="background"]
+margin_left = 18.0
+margin_top = 123.0
+margin_right = 1061.0
+margin_bottom = 1046.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="background/ScrollContainer"]
+
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [node name="HTTPRequest2" type="HTTPRequest" parent="."]
@@ -27,8 +35,11 @@ text = "Dodaj Grupę"
 
 [node name="HTTPRequest4" type="HTTPRequest" parent="."]
 
+[node name="HTTPRequest5" type="HTTPRequest" parent="."]
+
 [connection signal="pressed" from="background/AddGroupButton" to="." method="_on_AddGroupButton_pressed"]
 [connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
 [connection signal="request_completed" from="HTTPRequest2" to="." method="_on_HTTPRequest2_request_completed"]
 [connection signal="request_completed" from="HTTPRequest3" to="." method="_on_HTTPRequest3_request_completed"]
 [connection signal="request_completed" from="HTTPRequest4" to="." method="_on_HTTPRequest4_request_completed"]
+[connection signal="request_completed" from="HTTPRequest5" to="." method="_on_HTTPRequest5_request_completed"]
