@@ -11,27 +11,33 @@ onready var http2 : HTTPRequest = $HTTPRequest2
 onready var http3 : HTTPRequest = $HTTPRequest3
 onready var http4 : HTTPRequest = $HTTPRequest4
 onready var http5 : HTTPRequest = $HTTPRequest5
+onready var NameInput = $background/NameInput 
+onready var Notification = $background/Notification
 
 onready var FriendList = $background/ScrollContainer/VBoxContainer
 
 var newGroup := false
 var groupId
 var counter = 0
-var members = [{"stringValue": "Dh3MPZlLTQQlhHSp84vW4zQItHk2"}, 
-	{"stringValue": "KzWufOjquUSqLyftrOWFA6ppde13"},
-	{"stringValue": "nzq1rnHZyPZDKRb2Yl3jFexBxjj1"}]
-	
-var friends : Array = []
-var groups : Array = []
 
-var newGroupFriends : Array = []
+var FriendsGroups := {
+	"Friends": { "arrayValue": { "values": []}},
+	"Groups": { "arrayValue": { "values": []}}
+}
+
+var Group := {
+	"Name" : {},
+	"Members": { "arrayValue": { "values": []}}
+}
+	
+var FriendsToShow : Array = []
+var NewGroupFriends : Array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Firebase.get_document("userFriendsGroups/%s" % Firebase.user_info.id, http5)
 	yield(get_tree().create_timer(0.5), "timeout")
-	print("friends: ", friends)
-	for f in friends:
+	for f in FriendsToShow:
 		var tmpFriendCard = friendCardScene.instance()
 		tmpFriendCard.get_node("background/Name").text = f
 		tmpFriendCard.get_node("background").connect("gui_input", self, "_onPressFriendCard", [f])
@@ -42,61 +48,89 @@ func _ready():
 
 func _on_AddGroupButton_pressed():
 	groupId = v4()
-	print(groupId)
-	members.append({"stringValue": Firebase.user_info.id})
-	print(members)
-	Firebase.get_document("groups/%s" % groupId, http)
+	
+	Group["Name"] = {"stringValue" : NameInput.text}
+	Group["Members"].arrayValue.values.append({"stringValue": Firebase.user_info.id})
+	
+	for f in NewGroupFriends:
+		Group["Members"].arrayValue.values.append({"stringValue": f})
+		
+	Firebase.save_document("groups?documentId=%s" % groupId, Group, http)
 	pass # Replace with function body.
 
 func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
 	match response_code:
 		404:
-			Firebase.save_document("groups?documentId=%s" % groupId, {"Members":{ "arrayValue": { "values": members}}}, http2)
-		200:
 			return
-			
+		200:
+			FriendsGroups["Friends"].arrayValue.values = []
+			FriendsGroups["Groups"].arrayValue.values = []
+			Firebase.get_document("userFriendsGroups/%s" % Group["Members"].arrayValue.values[counter].stringValue, http2)
+				
+			print("Utworzono grupę")
 
 func _on_HTTPRequest2_request_completed(result, response_code, headers, body):
 	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
 	match response_code:
 		404:
+			FriendsGroups["Groups"].arrayValue.values.append({"stringValue": groupId})
+			Firebase.save_document("userFriendsGroups/?documentId=%s" % Group["Members"].arrayValue.values[counter].stringValue, FriendsGroups, http3)
 			return
 		200:
-			print("Utworzono grupę")
-			#Firebase.get_document("userFriendsGroups/%s" % members[counter].stringValue, http3)
-				#yield()
-
-#func _on_HTTPRequest3_request_completed(result, response_code, headers, body):
-#	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-#	print(result_body)
-#	match response_code:
-#		404:
-#			Firebase.save_document("userFriendsGroups/?documentId=%s" % members[counter].stringValue, {"Groups":{ "arrayValue": { "values": {"stringValue": groupId}}}}, http3)
-#			counter += 1
-#			return
-#		200:
-#			Firebase.get_document("userFriendsGroups/%s" % members[counter].stringValue, http4)
-#			print("Stworzono grupe")
+			FriendsGroups["Friends"] = result_body.fields["Friends"]
+				
+			if(result_body.fields["Groups"].arrayValue.size() != 0):
+				FriendsGroups["Groups"] = result_body.fields["Groups"]
+			FriendsGroups["Groups"].arrayValue.values.append({"stringValue": groupId})
+			Firebase.update_document("userFriendsGroups/%s" % Group["Members"].arrayValue.values[counter].stringValue, FriendsGroups, http3)
 			
-#func _on_HTTPRequest4_request_completed(result, response_code, headers, body):
-#	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-#	print(result_body)
-#	match response_code:
-#		404:
-#			return
-#		200:
-#			if(result_body.fields["Friends"].arrayValue.values != null):
-#				friends = result_body.fields["Friends"].arrayValue.values
-#			if(result_body.fields["Groups"].arrayValue.values != null):
-#				groups = result_body.fields["Groups"].arrayValue.values
-#			groups.append({"stringValue": groupId})
-#			Firebase.update_document("userFriendsGroups/%s" % members[counter].stringValue, {"Friends":{ "arrayValue": { "values": friends}}, "Groups": { "arrayValue": { "values": groups}}}, http3)
-#			counter += 1
-#			print("Stworzono grupe")
-#			friends.clear()
-#			groups.clear()
+	
 
+func _on_HTTPRequest3_request_completed(result, response_code, headers, body):
+	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
+	match response_code:
+		404:
+			return
+		200:
+			FriendsGroups["Friends"].arrayValue.values = []
+			FriendsGroups["Groups"].arrayValue.values = []
+			counter += 1
+			if(counter < NewGroupFriends.size() + 1):
+				Firebase.get_document("userFriendsGroups/%s" % Group["Members"].arrayValue.values[counter].stringValue, http2)
+			else:
+				Notification.text = "Utworzono grupę"
+			print("Dodano użytkownika do grupy")
+			
+
+func _on_HTTPRequest5_request_completed(result, response_code, headers, body):
+	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
+	match response_code:
+		404:
+			return
+		200:
+			FriendsGroups["Friends"] = result_body.fields["Friends"]
+			for id in FriendsGroups["Friends"].arrayValue.values:
+				FriendsToShow.append(id.stringValue)
+			#for i in range(friends.size()):
+				#var tmp = friendCardScene.instance()
+				#tmp.get_node("background/Name").text = friends[i].stringValue
+				#FriendList.add_child(tmp)
+	#Notification.text = "Wyslano zaproszenie"
+	pass # Replace with function body.
+
+
+func _onPressFriendCard(event, id):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == BUTTON_LEFT:
+				if NewGroupFriends.has(id):
+					NewGroupFriends.erase(id)
+					FriendList.get_node(id).modulate = Color("#ffffff")
+				else:
+					NewGroupFriends.append(id)
+					FriendList.get_node(id).modulate = Color("#aaaaaa")
+					
 static func getRandomInt():
   # Randomize every time to minimize the risk of collisions
   randomize()
@@ -137,30 +171,9 @@ static func v4():
 #	pass
 
 
-func _on_HTTPRequest5_request_completed(result, response_code, headers, body):
-	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-	match response_code:
-		404:
-			return
-		200:
-			print(result_body.fields["Friends"].arrayValue.values)
-			for id in result_body.fields["Friends"].arrayValue.values:
-				friends.append(id.stringValue)
-			#for i in range(friends.size()):
-				#var tmp = friendCardScene.instance()
-				#tmp.get_node("background/Name").text = friends[i].stringValue
-				#FriendList.add_child(tmp)
-	#Notification.text = "Wyslano zaproszenie"
+
+
+
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://Scenes/main.tscn")
 	pass # Replace with function body.
-
-
-func _onPressFriendCard(event, id):
-	if event is InputEventMouseButton:
-		if event.pressed:
-			if event.button_index == BUTTON_LEFT:
-				if newGroupFriends.has(id):
-					newGroupFriends.erase(id)
-					FriendList.get_node(id).modulate = Color("#ffffff")
-				else:
-					newGroupFriends.append(id)
-					FriendList.get_node(id).modulate = Color("#aaaaaa")
