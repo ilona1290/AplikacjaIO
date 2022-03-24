@@ -1,0 +1,105 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Fonts/Theme.tres" type="Theme" id=1]
+[ext_resource path="res://Scripts/Register.gd" type="Script" id=2]
+
+[node name="Register" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_left = -3.0
+margin_top = 1.0
+margin_right = 1077.0
+margin_bottom = 1921.0
+color = Color( 0.027451, 0.572549, 0.596078, 1 )
+
+[node name="Form" type="VBoxContainer" parent="Background"]
+margin_left = 50.0
+margin_top = 900.0
+margin_right = 1004.0
+margin_bottom = 1088.0
+
+[node name="Email" type="HBoxContainer" parent="Background/Form"]
+margin_right = 954.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="EmailLabel" type="Label" parent="Background/Form/Email"]
+margin_right = 250.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 250, 60 )
+rect_pivot_offset = Vector2( 291, 531 )
+text = "Email"
+
+[node name="EmailInput" type="LineEdit" parent="Background/Form/Email"]
+margin_left = 254.0
+margin_right = 954.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 700, 60 )
+
+[node name="Password" type="HBoxContainer" parent="Background/Form"]
+margin_top = 64.0
+margin_right = 954.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="PasswordLabel" type="Label" parent="Background/Form/Password"]
+margin_right = 250.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 250, 60 )
+text = "Hasło"
+
+[node name="PasswordInput" type="LineEdit" parent="Background/Form/Password"]
+margin_left = 254.0
+margin_right = 954.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 700, 60 )
+secret = true
+
+[node name="ConfirmPassword" type="HBoxContainer" parent="Background/Form"]
+margin_top = 128.0
+margin_right = 954.0
+margin_bottom = 188.0
+rect_min_size = Vector2( 0, 60 )
+
+[node name="ConfirmPasswordLabel" type="Label" parent="Background/Form/ConfirmPassword"]
+margin_right = 250.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 250, 60 )
+text = "Powtórz hasło"
+
+[node name="ConfirmPasswordInput" type="LineEdit" parent="Background/Form/ConfirmPassword"]
+margin_left = 254.0
+margin_right = 954.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 700, 60 )
+secret = true
+
+[node name="RegisterButton" type="Button" parent="Background"]
+margin_left = 450.0
+margin_top = 1300.0
+margin_right = 650.0
+margin_bottom = 1400.0
+text = "Zarejestruj"
+
+[node name="BackButton" type="Button" parent="Background"]
+margin_left = 830.0
+margin_top = 30.0
+margin_right = 1030.0
+margin_bottom = 130.0
+text = "Powrót"
+
+[node name="Notification" type="RichTextLabel" parent="Background"]
+margin_left = 309.0
+margin_top = 1188.0
+margin_right = 1009.0
+margin_bottom = 1279.0
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="Background/RegisterButton" to="." method="_on_RegisterButton_pressed"]
+[connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

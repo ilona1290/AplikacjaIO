@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Aplikacja_IO"
-run/main_scene="res://Scenes/main.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
