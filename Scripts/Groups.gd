@@ -11,7 +11,7 @@ onready var Notification = $Background/Notification
 onready var GroupList = $Background/ScrollContainer/VBoxContainer
 
 var counterGroups = 0
-var counterMembers = 1
+var counterMembers = 0
 
 var UserGroups : Array = []
 var Members = []
@@ -91,7 +91,7 @@ func _on_HTTPRequest3_request_completed(result, response_code, headers, body):
 				generateGroupList(Group["Name"], Group["Members"])
 				Group["Members"] = []
 				counterGroups += 1
-				counterMembers = 1
+				counterMembers = 0
 				
 				if(counterGroups < UserGroups.size()): 
 					Firebase.get_document("groups/%s" % UserGroups[counterGroups].stringValue, http2)

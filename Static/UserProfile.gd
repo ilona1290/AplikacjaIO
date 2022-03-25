@@ -6,6 +6,7 @@ var Surname : String = ""
 var BankAccount : String = ""
 var Telephone : String = ""
 var Avatar : Array = []
+var AvatarPath : String = ""
 
 func to_json():
 	return "{" \
@@ -29,6 +30,6 @@ func to_dictionary() -> Dictionary:
 	return {"Name": {"stringValue": Name}, 
 	"Surname": {"stringValue": Surname}, 
 	"BankAccount": {"stringValue": BankAccount}, 
-	"Telephone": {"stringValue": Telephone}}
-	#"Avatar": {"stringValue": String(Avatar)}}
+	"Telephone": {"stringValue": Telephone},
+	"AvatarPath": {"stringValue": AvatarPath}}
 

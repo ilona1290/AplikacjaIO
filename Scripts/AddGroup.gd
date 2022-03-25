@@ -120,10 +120,12 @@ func _on_HTTPRequest4_request_completed(result, response_code, headers, body):
 		404:
 			return
 		200:
-			FriendsGroups["Friends"] = result_body.fields["Friends"]
-			
-			for id in FriendsGroups["Friends"].arrayValue.values:
-				FriendsToShow.append(id.stringValue)
+			if(result_body.fields["Friends"].arrayValue.size() != 0):
+				FriendsGroups["Friends"] = result_body.fields["Friends"]
+				for id in FriendsGroups["Friends"].arrayValue.values:
+					FriendsToShow.append(id.stringValue)
+			else:
+				Notification.text = "Nie masz żadnych przyjaciół"
 				
 ###################################
 #	Selecting friends

@@ -38,22 +38,25 @@ var information_sent = false
 var UserAccount : UserProfile = UserProfile.new()
 
 func _ready():
-	# Uncomment for loading profile from file
+	#Uncomment for loading profile from file
 	#var file = File.new()
 	#file.open("res://profile.dat", File.READ)
 	#UserAccount.load_from_json(file.get_as_text())
 	#file.close()
 	
 	Firebase.get_document("users/%s" % Firebase.user_info.id, http)
+	yield(http, "request_completed")
 	#Firebase.save_document("users?documentId=%s" % Firebase.user_info.id, UserAccount.to_dictionary() ,http)
 	#UserAccount.Name = "ddewdwe"
 	
 	
 	var AvatarImg : Image = Image.new()
-	if UserAccount.Avatar == []:
+	#if UserAccount.Avatar == []:
+	if UserAccount.AvatarPath == "":
 		AvatarImg.load("res://Images/AvatarPlaceholder.png")
 	else:
-		AvatarImg.load_png_from_buffer(UserAccount.Avatar)
+		AvatarImg.load("res://" + UserAccount.AvatarPath)
+		#AvatarImg.load_png_from_buffer(UserAccount.Avatar)
 	var AvatarTex : ImageTexture = ImageTexture.new()
 	AvatarTex.create_from_image(AvatarImg)
 	Avatar.texture = AvatarTex
@@ -129,6 +132,7 @@ func _on_AvatarFileDialog_confirmed():
 	Avatar.texture = NewAvatarTexture
 	
 	UserAccount.Avatar = Avatar.texture.get("image").save_png_to_buffer()
+	UserAccount.AvatarPath = NewFilePath
 
 ###################################
 #	Saving to users collection
@@ -150,7 +154,7 @@ func _on_HTTPRequest_request_completed(result: int, response_code: int, headers:
 			UserAccount.Surname = result_body.fields["Surname"].stringValue
 			UserAccount.Telephone = result_body.fields["Telephone"].stringValue
 			#print(result_body.fields["Avatar"].stringValue)
-			#UserAccount.Avatar = result_body.fields["Avatar"].stringValue
+			UserAccount.AvatarPath = result_body.fields["AvatarPath"].stringValue
 			#self.UserAccount.set_profile(result_body.fields)
 			
 			BankAccountValue.text = UserAccount.BankAccount
