@@ -27,6 +27,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Firebase="*res://Static/Firebase.gd"
+ChosenGroup="*res://Static/ChosenGroup.gd"
 
 [debug]
 

@@ -10,6 +10,8 @@ onready var Notification = $Background/Notification
 
 onready var GroupList = $Background/ScrollContainer/VBoxContainer
 
+
+
 var counterGroups = 0
 var counterMembers = 0
 
@@ -32,10 +34,24 @@ func generateGroupList(name, members):
 			tmpGroupCard.get_node("Background/Members").text = "Członkowie: " + m
 		else:
 			tmpGroupCard.get_node("Background/Members").text = tmpGroupCard.get_node("Background/Members").text + ", " + m
-	#tmpGroupCard.get_node("Background").connect("gui_input", self, "_onPressFriendCard", [g])
+	tmpGroupCard.get_node("Background").connect("gui_input", self, "_onPressGroupCard", [name, members])
 	tmpGroupCard.name = name
 	GroupList.add_child(tmpGroupCard)
 
+func _onPressGroupCard(event, name, members):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == BUTTON_LEFT:
+				ChosenGroup.Name = name
+				ChosenGroup.Members = members
+				get_tree().change_scene("res://Scenes/Bills.tscn")
+				#if NewGroupFriends.has(id):
+					#NewGroupFriends.erase(id)
+					#FriendList.get_node(id).modulate = Color("#ffffff")
+				#else:
+					#NewGroupFriends.append(id)
+					#FriendList.get_node(id).modulate = Color("#aaaaaa")
+					
 
 func _on_AddGroupButton_pressed():
 	get_tree().change_scene("res://Scenes/AddGroup.tscn")
