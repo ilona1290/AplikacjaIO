@@ -56,6 +56,35 @@ func _on_SendButton_pressed():
 	Bills["Title"] = {"stringValue": TitleInput.text}
 	Bills["Amount"] = {"stringValue": AmountInput.text}
 	Bills["Members"] = { "arrayValue": { "values": Members}}
+	
+	var amount = float(AmountInput.text)
+	var dividedAmount
+	var result = ""
+	if(!AdvancedCheckButton.pressed):
+		dividedAmount = stepify(float(amount / Members.size()), 0.01)
+		for m in Members:
+			if(result == ""):
+				result = "Po podziale: " + result + m.stringValue + " " + str(dividedAmount) + "zł"
+			else:
+				result = result + ", " +  m.stringValue + " " + str(dividedAmount) + "zł"
+		Result.text = result
+	else:
+		var fullAmount = 0
+		var DividedAmounts = []
+		var counter = 0
+		for i in range(ChosenGroup.Members.size()):
+				fullAmount = fullAmount + int(MembersList.get_child(i).get_node("Background/AmountInput").text) 
+		for i in range(ChosenGroup.Members.size()):
+				DividedAmounts.append(stepify(float((int(MembersList.get_child(i).get_node("Background/AmountInput").text) * amount) / fullAmount), 0.01))
+		print(DividedAmounts)
+		for m in MembersList.get_children():
+			if(DividedAmounts[counter] != 0):
+				if(result == ""):
+					result = "Po podziale: " + result + m.name + " " + str(DividedAmounts[counter]) + "zł"
+				else:
+					result = result + ", " +  m.name + " " + str(DividedAmounts[counter]) + "zł"
+			counter += 1
+		Result.text = result
 	#Firebase.save_document("bills?documentId=%s" % BillName, Bills, http)
 
 
@@ -106,7 +135,15 @@ static func v4():
 
 
 func _on_AdvancedCheckButton_pressed():
-	pass
+	if(AdvancedCheckButton.pressed):
+		for i in range(ChosenGroup.Members.size()):
+			MembersList.get_child(i).get_node("Background/AmountLabel").visible = true
+			MembersList.get_child(i).get_node("Background/AmountInput").visible = true
+	else:
+		for i in range(ChosenGroup.Members.size()):
+			MembersList.get_child(i).get_node("Background/AmountLabel").visible = false
+			MembersList.get_child(i).get_node("Background/AmountInput").text = ""
+			MembersList.get_child(i).get_node("Background/AmountInput").visible = false
 
 
 func _on_BackButton_pressed():
