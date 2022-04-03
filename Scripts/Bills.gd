@@ -9,6 +9,9 @@ onready var AmountInput = $Background/AmountInput
 onready var TitleInput = $Background/TitleInput
 onready var http : HTTPRequest = $HTTPRequest
 onready var Notification = $Background/Notification
+onready var Result = $Background/Result
+onready var AdvancedCheckButton = $Background/AdvancedCheckButton
+
 
 var Bills := {
 	"Title" : {},
@@ -25,7 +28,9 @@ func generateMembersList():
 	for m in ChosenGroup.Members:
 		var tmpMembersCard = groupMembersScene.instance()
 		tmpMembersCard.get_node("Background/Name").text = m
-		tmpMembersCard.get_node("Background").connect("gui_input", self, "_onPressMembersCard", [m])
+		tmpMembersCard.get_node("Background/AmountLabel").visible = false
+		tmpMembersCard.get_node("Background/AmountInput").visible = false
+		tmpMembersCard.get_node("Background").connect("gui_input", self, "_onPressMembersCard", [{"stringValue": m}])
 		tmpMembersCard.name = m
 		MembersList.add_child(tmpMembersCard)
 		print(m)
@@ -38,19 +43,20 @@ func _onPressMembersCard(event, name):
 			if event.button_index == BUTTON_LEFT:
 				if Members.has(name):
 					Members.erase(name)
-					MembersList.get_node(name).modulate = Color("#ffffff")
+					MembersList.get_node(name.stringValue).modulate = Color("#ffffff")
 				else:
-					Members.append({"stringValue": name})
-					MembersList.get_node(name).modulate = Color("#aaaaaa")
-					
+					Members.append(name)
+					MembersList.get_node(name.stringValue).modulate = Color("#aaaaaa")
+
+
+
 
 func _on_SendButton_pressed():
 	var BillName = v4()
 	Bills["Title"] = {"stringValue": TitleInput.text}
 	Bills["Amount"] = {"stringValue": AmountInput.text}
 	Bills["Members"] = { "arrayValue": { "values": Members}}
-	print(Bills)
-	Firebase.save_document("bills?documentId=%s" % BillName, Bills, http)
+	#Firebase.save_document("bills?documentId=%s" % BillName, Bills, http)
 
 
 
@@ -98,8 +104,10 @@ static func v4():
 	b[10], b[11], b[12], b[13], b[14], b[15]
   ]
 
+
+func _on_AdvancedCheckButton_pressed():
+	pass
+
+
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://Scenes/Groups.tscn")
-
-
-
