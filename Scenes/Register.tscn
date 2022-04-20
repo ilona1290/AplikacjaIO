@@ -98,8 +98,5 @@ margin_top = 1188.0
 margin_right = 1009.0
 margin_bottom = 1279.0
 
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
-
 [connection signal="pressed" from="Background/RegisterButton" to="." method="_on_RegisterButton_pressed"]
 [connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]

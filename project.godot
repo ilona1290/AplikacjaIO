@@ -26,8 +26,9 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Firebase="*res://Static/Firebase.gd"
+Firebase="res://Static/Firebase.gd"
 ChosenGroup="*res://Static/ChosenGroup.gd"
+Database="*res://Static/Database.gd"
 
 [debug]
 
