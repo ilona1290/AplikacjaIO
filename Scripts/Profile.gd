@@ -5,8 +5,6 @@ extends Control
 #onready var XXXInput = $Background/Informations/XXX/XXXInput
 #onready var XXXValue = $Background/Informations/XXX/XXXValue
 
-onready var http : HTTPRequest = $HTTPRequest
-
 onready var NameLabel = $Background/Informations/Name/NameInput
 onready var NameInput = $Background/Informations/Name/NameInput
 onready var NameValue = $Background/Informations/Name/NameValue
@@ -33,33 +31,36 @@ var new_profile := false
 var EditMode : bool = false
 var information_sent = false
 
-
-
 var UserAccount : UserProfile = UserProfile.new()
 
 func _ready():
-	#Uncomment for loading profile from file
-	#var file = File.new()
-	#file.open("res://profile.dat", File.READ)
-	#UserAccount.load_from_json(file.get_as_text())
-	#file.close()
+	# Loading data from database to UserAccount variable
+	UserAccount.loadFromDictionary(yield(Database.getProfiles([Database.userID]), "completed").Result[Database.userID])
+	# Setting all data from UserAccount variable to scene
+	loadProfile()
 	
-	Firebase.get_document("users/%s" % Firebase.user_info.id, http)
-	yield(http, "request_completed")
-	#Firebase.save_document("users?documentId=%s" % Firebase.user_info.id, UserAccount.to_dictionary() ,http)
-	#UserAccount.Name = "ddewdwe"
-	
-	
-	var AvatarImg : Image = Image.new()
-	#if UserAccount.Avatar == []:
-	if UserAccount.AvatarPath == "":
-		AvatarImg.load("res://Images/AvatarPlaceholder.png")
-	else:
-		AvatarImg.load("res://" + UserAccount.AvatarPath)
-		#AvatarImg.load_png_from_buffer(UserAccount.Avatar)
+	UserAccount.loadAvatar(yield(Database.getAvatar(Database.userID), "completed"))
+
 	var AvatarTex : ImageTexture = ImageTexture.new()
-	AvatarTex.create_from_image(AvatarImg)
+	AvatarTex.create_from_image(UserAccount.Avatar)
 	Avatar.texture = AvatarTex
+
+func loadProfile():
+	NameValue.text = UserAccount.Name
+	SurnameValue.text = UserAccount.Surname
+	BankAccountValue.text = UserAccount.BankAccount
+	TelephoneValue.text = UserAccount.Telephone
+	
+	NameInput.text = UserAccount.Name
+	SurnameInput.text = UserAccount.Surname
+	BankAccountInput.text = UserAccount.BankAccount
+	TelephoneInput.text = UserAccount.Telephone
+
+func saveProfile():
+	UserAccount.Name = NameInput.text
+	UserAccount.Surname = SurnameInput.text
+	UserAccount.BankAccount = BankAccountInput.text
+	UserAccount.Telephone = TelephoneInput.text
 
 func _on_EditButton_pressed():
 	if EditMode == false:
@@ -87,33 +88,16 @@ func _on_EditButton_pressed():
 		TelephoneValue.visible = true
 		
 		#Saving changes
-		NameValue.text = NameInput.text
-		SurnameValue.text = SurnameInput.text
-		BankAccountValue.text = BankAccountInput.text
-		TelephoneValue.text = TelephoneInput.text
+		saveProfile()
+		loadProfile()
 		
-		UserAccount.Name = NameInput.text
-		UserAccount.Surname = SurnameInput.text
-		UserAccount.BankAccount = BankAccountInput.text
-		UserAccount.Telephone = TelephoneInput.text
+		yield(Database.updateProfile(Database.userID, UserAccount.saveToDictionary()), "completed")
 		
 		Notification.text = "Zapisano zmiany"
-		match new_profile:
-			true:
-				Firebase.save_document("users?documentId=%s" % Firebase.user_info.id, UserAccount.to_dictionary(), http)
-			false:
-				Firebase.update_document("users/%s" % Firebase.user_info.id, UserAccount.to_dictionary(), http)
-
+		
 		information_sent = true
 		EditMode = false
 		EditButton.text = "Edytuj"
-		
-		# Uncomment for saving profile to file
-		#var file = File.new()
-		#file.open("res://profile.dat", File.WRITE)
-		#file.store_string(UserAccount.to_json())
-		#file.close()
-		
 
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://Scenes/Main.tscn")
@@ -124,51 +108,12 @@ func _on_Avatar_gui_input(event):
 			AvatarFileDialog.visible = true
 
 func _on_AvatarFileDialog_confirmed():
-	var NewFilePath = AvatarFileDialog.current_file
+	var NewFilePath = AvatarFileDialog.current_path
 	var NewAvatarImage : Image = Image.new()
 	NewAvatarImage.load(NewFilePath)
+	NewAvatarImage.resize(256, 256)
 	var NewAvatarTexture : ImageTexture = ImageTexture.new()
 	NewAvatarTexture.create_from_image(NewAvatarImage)
 	Avatar.texture = NewAvatarTexture
 	
-	UserAccount.Avatar = Avatar.texture.get("image").save_png_to_buffer()
-	UserAccount.AvatarPath = NewFilePath
-
-###################################
-#	Saving to users collection
-###################################
-func _on_HTTPRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
-	
-	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-	match response_code:
-		404:
-			Notification.text = "Please, enter your information"
-			new_profile = true
-			return
-		200:
-			if information_sent:
-				Notification.text = "Information saved successfully"
-				information_sent = false
-			UserAccount.Name = result_body.fields["Name"].stringValue
-			UserAccount.BankAccount = result_body.fields["BankAccount"].stringValue
-			UserAccount.Surname = result_body.fields["Surname"].stringValue
-			UserAccount.Telephone = result_body.fields["Telephone"].stringValue
-			#print(result_body.fields["Avatar"].stringValue)
-			UserAccount.AvatarPath = result_body.fields["AvatarPath"].stringValue
-			#self.UserAccount.set_profile(result_body.fields)
-			
-			BankAccountValue.text = UserAccount.BankAccount
-			NameValue.text = UserAccount.Name
-			SurnameValue.text = UserAccount.Surname
-			TelephoneValue.text = UserAccount.Telephone
-			NameInput.text = UserAccount.Name
-			SurnameInput.text = UserAccount.Surname
-			BankAccountInput.text = UserAccount.BankAccount
-			TelephoneInput.text = UserAccount.Telephone
-			#var NewAvatarImage : Image = Image.new()
-			#NewAvatarImage.load_png_from_buffer(UserAccount.Avatar)
-			#var NewAvatarTexture : ImageTexture = ImageTexture.new()
-			#NewAvatarTexture.create_from_image(NewAvatarImage)
-			#Avatar.texture = NewAvatarTexture
-			
-
+	Database.uploadAvatar(NewAvatarImage)

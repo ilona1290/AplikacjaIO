@@ -2,81 +2,52 @@ extends Control
 
 var friendCardScene = preload("res://Scenes/FriendCard.tscn")
 
-onready var NameInput = $Background/NameInput
-onready var SurnameInput = $Background/SurnameInput
-onready var http : HTTPRequest = $HTTPRequest
-onready var http2: HTTPRequest = $HTTPRequest2
+onready var PatternInput = $Background/HBoxContainer/PatternInput
 onready var Notification = $Background/Notification
-onready var FriendList = $Background/ScrollContainer/VBoxContainer
+onready var UserList = $Background/ScrollContainer/VBoxContainer
 
-var newFriends := false
-var isFound := false
-
-var FriendsGroups := {
-	"Friends": { "arrayValue": { "values": []}},
-	"Groups": { "arrayValue": { "values": []}}
-}
+var Friends : Array = []
+var SearchList : Array = []
+var SelectedCard  = "0"
 
 func _ready():
-	Firebase.get_document("userFriendsGroups/%s" % Firebase.user_info.id, http2)
+	Friends = yield(Database.getUserFriends(Database.userID), "completed").Result
 
-###################################
-#	Adding to friends
-###################################
-func _on_HTTPRequest_request_completed(result: int, response_code: int, headers: PoolStringArray, body: PoolByteArray) -> void:
-	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-	match response_code:
-		404:
-			return
-		200:
-			for i in range (result_body.documents.size()):
-				if(result_body.documents[i].fields["Name"].stringValue == NameInput.text and result_body.documents[i].fields["Surname"].stringValue == SurnameInput.text):
-					isFound = true
-					
-					# Problem: Adding same user multiple times
-					# Fix below doesn't working
-					
-					#print(Firebase.prepareDataForFirebase(result_body.documents[i].name.substr(63)))
-					#print(FriendsGroups["Friends"].arrayValue.values[0])
-					#if(FriendsGroups["Friends"].arrayValue.values.has({"stringValue": result_body.documents[i].name.substr(63)})):
-					#	Notification.text = "Masz już tego użykownika w znajomych"
-					#	return
-					
-					# Replace 63 in substr with rfind("/") + 1
-					FriendsGroups["Friends"].arrayValue.values.append({"stringValue": result_body.documents[i].name.substr(63)})
-					if(newFriends):
-						Firebase.save_document("userFriendsGroups?documentId=%s" % Firebase.user_info.id, FriendsGroups, http2)
-						newFriends = false
-						break
-					else:
-						Firebase.update_document("userFriendsGroups/%s" % Firebase.user_info.id, FriendsGroups, http2)
-						break
+func generateSearchList():
+	for i in UserList.get_children():
+		i.queue_free()
+	var userProfile = UserProfile.new()
+	var allFriendsProfiles = yield(Database.getProfiles(SearchList), "completed").Result
+	for user in SearchList:
+		if !Friends.has(user) and user != Database.userID:
+			userProfile.loadFromDictionary(allFriendsProfiles[user])
+			userProfile.loadAvatar(yield(Database.getAvatar(user), "completed"))
+			var tmpUserCard = userProfile.createProfileCard()
+			tmpUserCard.get_node("Background").connect("gui_input", self, "_onPressFriendCard", [user])
+			tmpUserCard.name = user
+			UserList.add_child(tmpUserCard)
+	
+func _onPressFriendCard(event, id):
+	if event is InputEventMouseButton:
+		if event.pressed:
+			if event.button_index == BUTTON_LEFT:
+				if SelectedCard == "0":
+					$Background/AddButton.visible = true
 				else:
-					isFound = false
-			if(isFound):
-				Notification.text = "Wysłano zaproszenie"
-			else:
-				Notification.text = "Nie ma takiego użytkownika"
-
-###################################
-#	Saving to userFriendsGroups collection
-###################################
-func _on_HTTPRequest2_request_completed(result, response_code, headers, body):
-	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-	match response_code:
-		404:
-			newFriends = true
-			return
-		200:
-			newFriends = false
-			if(result_body.fields["Friends"].arrayValue.size() != 0):
-				FriendsGroups["Friends"] = result_body.fields["Friends"]
-			
-			FriendsGroups["Groups"] = result_body.fields["Groups"]
-
+					UserList.get_node(SelectedCard).modulate = Color("#ffffff")
+				SelectedCard = id
+				UserList.get_node(id).modulate = Color("#aaaaaa")
 
 func _on_BackButton_pressed():
 	get_tree().change_scene("res://Scenes/Main.tscn")
 
 func _on_FindButton_pressed():
-	Firebase.get_document("users", http)
+	SearchList = yield(Database.searchForUsers(PatternInput.text), "completed").Result
+	generateSearchList()
+
+func _on_AddButton_pressed() -> void:
+	$Background/AddButton.visible = false
+	yield(Database.addFriend(SelectedCard), "completed")
+	UserList.get_node(SelectedCard).queue_free()
+	SelectedCard = "0"
+	Notification.text = "Wysłano zaproszenie"

@@ -100,9 +100,9 @@ valign = 1
 
 [node name="SurnameInput" type="LineEdit" parent="Background/Informations/Surname"]
 visible = false
-margin_left = 250.0
-margin_right = 950.0
-margin_bottom = 56.0
+margin_left = 254.0
+margin_right = 954.0
+margin_bottom = 60.0
 rect_min_size = Vector2( 700, 60 )
 custom_fonts/font = ExtResource( 2 )
 
@@ -178,22 +178,19 @@ custom_fonts/font = ExtResource( 2 )
 valign = 1
 
 [node name="AvatarFileDialog" type="FileDialog" parent="."]
-margin_right = 360.0
-margin_bottom = 640.0
+margin_right = 720.0
+margin_bottom = 1280.0
 rect_min_size = Vector2( 150, 52.5 )
-rect_scale = Vector2( 3, 3 )
+rect_scale = Vector2( 1.5, 1.5 )
 window_title = "Open a File"
 dialog_hide_on_ok = true
 mode = 0
-access = 1
+access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "user://home/komp/Desktop/x/AplikacjaIO"
-current_path = "user://home/komp/Desktop/x/AplikacjaIO/"
-
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
+current_dir = "/home/public/AplikacjaIO"
+current_path = "/home/public/AplikacjaIO/"
 
 [connection signal="pressed" from="Background/EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="gui_input" from="Background/Avatar" to="." method="_on_Avatar_gui_input"]
 [connection signal="confirmed" from="AvatarFileDialog" to="." method="_on_AvatarFileDialog_confirmed"]
-[connection signal="request_completed" from="HTTPRequest" to="." method="_on_HTTPRequest_request_completed"]
