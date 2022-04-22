@@ -2,7 +2,7 @@ extends Control
 
 
 var groupMembersScene = preload("res://Scenes/GroupMembers.tscn")
-const MODULO_8_BIT = 256
+
 var Members = []
 onready var MembersList = $Background/ScrollContainer/VBoxContainer
 onready var AmountInput = $Background/AmountInput
@@ -10,14 +10,8 @@ onready var TitleInput = $Background/TitleInput
 onready var http : HTTPRequest = $HTTPRequest
 onready var Notification = $Background/Notification
 onready var Result = $Background/Result
-onready var AdvancedCheckButton = $Background/AdvancedCheckButton
-
-
-var Bills := {
-	"Title" : {},
-	"Amount" : {},
-	"Members": { "arrayValue": { "values": []}}
-}
+onready var AmountlyCheckButton = $Background/AmountlyCheckButton
+onready var CustomCheckButton = $Background/CustomCheckButton
 
 func _ready():
 	print(ChosenGroup.Name)
@@ -25,17 +19,24 @@ func _ready():
 	generateMembersList()
 
 func generateMembersList():
+	var allMembersProfiles = yield(Database.getProfiles(ChosenGroup.Members), "completed").Result
 	for m in ChosenGroup.Members:
 		var tmpMembersCard = groupMembersScene.instance()
-		tmpMembersCard.get_node("Background/Name").text = m
+		tmpMembersCard.get_node("Background/Name").text = allMembersProfiles[m]["Name"]
 		tmpMembersCard.get_node("Background/AmountLabel").visible = false
 		tmpMembersCard.get_node("Background/AmountInput").visible = false
-		tmpMembersCard.get_node("Background").connect("gui_input", self, "_onPressMembersCard", [{"stringValue": m}])
-		tmpMembersCard.name = m
+		tmpMembersCard.get_node("Background").connect("gui_input", self, "_onPressMembersCard", [String(m)])
+		tmpMembersCard.get_node("Background/AmountInput").connect("text_changed", self, "updateAmount")
+		tmpMembersCard.name = String(m)
 		MembersList.add_child(tmpMembersCard)
 		print(m)
 
-
+func updateAmount(a):
+	var fullAmount = float(AmountInput.text)
+	if(CustomCheckButton.pressed):
+		for i in ChosenGroup.Members:
+			fullAmount -= float(MembersList.get_node(i).get_node("Background/AmountInput").text)
+		Result.text = "Pozostało " + String(fullAmount) + "zl"
 
 func _onPressMembersCard(event, name):
 	if event is InputEventMouseButton:
@@ -43,32 +44,32 @@ func _onPressMembersCard(event, name):
 			if event.button_index == BUTTON_LEFT:
 				if Members.has(name):
 					Members.erase(name)
-					MembersList.get_node(name.stringValue).modulate = Color("#ffffff")
+					MembersList.get_node(name).modulate = Color("#ffffff")
 				else:
 					Members.append(name)
-					MembersList.get_node(name.stringValue).modulate = Color("#aaaaaa")
+					MembersList.get_node(name).modulate = Color("#aaaaaa")
 
 
 
 
 func _on_SendButton_pressed():
-	var BillName = v4()
-	Bills["Title"] = {"stringValue": TitleInput.text}
-	Bills["Amount"] = {"stringValue": AmountInput.text}
-	Bills["Members"] = { "arrayValue": { "values": Members}}
+	var allBills = []
+	var B = {}
+	B["Description"] = TitleInput.text
+	B["To"] = Database.userID
+	B["IsPayed"] = 0
 	
 	var amount = float(AmountInput.text)
 	var dividedAmount
 	var result = ""
-	if(!AdvancedCheckButton.pressed):
+	if(!AmountlyCheckButton.pressed and !CustomCheckButton.pressed):
 		dividedAmount = stepify(float(amount / Members.size()), 0.01)
 		for m in Members:
-			if(result == ""):
-				result = "Po podziale: " + result + m.stringValue + " " + str(dividedAmount) + "zł"
-			else:
-				result = result + ", " +  m.stringValue + " " + str(dividedAmount) + "zł"
-		Result.text = result
-	else:
+			B["Amount"] = dividedAmount
+			B["From"] = m
+			MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania " + String(B["Amount"]) + "zł"
+			allBills.append(B.duplicate())
+	elif(AmountlyCheckButton.pressed):
 		var fullAmount = 0
 		var DividedAmounts = []
 		var counter = 0
@@ -77,65 +78,46 @@ func _on_SendButton_pressed():
 		for i in range(ChosenGroup.Members.size()):
 				DividedAmounts.append(stepify(float((int(MembersList.get_child(i).get_node("Background/AmountInput").text) * amount) / fullAmount), 0.01))
 		print(DividedAmounts)
-		for m in MembersList.get_children():
+		for m in ChosenGroup.Members:
 			if(DividedAmounts[counter] != 0):
-				if(result == ""):
-					result = "Po podziale: " + result + m.name + " " + str(DividedAmounts[counter]) + "zł"
-				else:
-					result = result + ", " +  m.name + " " + str(DividedAmounts[counter]) + "zł"
+				B["Amount"] = DividedAmounts[counter]
+				B["From"] = m
+				MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania " + String(B["Amount"]) + "zł"
+				allBills.append(B.duplicate())
 			counter += 1
-		Result.text = result
-	#Firebase.save_document("bills?documentId=%s" % BillName, Bills, http)
+	else:
+		for i in ChosenGroup.Members:
+			B["Amount"] = MembersList.get_node(i).get_node("Background/AmountInput").text
+			B["From"] = i
+			MembersList.get_node(i).get_node("Background/ResultLabel").text = "Do oddania " + B["Amount"] + "zł"
+			if(B["Amount"] != ""):
+				allBills.append(B.duplicate())
+	Database.addBills(allBills)
 
 
-
-func _on_HTTPRequest_request_completed(result, response_code, headers, body):
-	var result_body := JSON.parse(body.get_string_from_ascii()).result as Dictionary
-	match response_code:
-		404:
-			return
-		200:
-			Notification.text = "Przesłano"
-
-static func getRandomInt():
-  # Randomize every time to minimize the risk of collisions
-  randomize()
-
-  return randi() % MODULO_8_BIT
-
-static func uuidbin():
-  # 16 random bytes with the bytes on index 6 and 8 modified
-  return [
-	getRandomInt(), getRandomInt(), getRandomInt(), getRandomInt(),
-	getRandomInt(), getRandomInt(), ((getRandomInt()) & 0x0f) | 0x40, getRandomInt(),
-	((getRandomInt()) & 0x3f) | 0x80, getRandomInt(), getRandomInt(), getRandomInt(),
-	getRandomInt(), getRandomInt(), getRandomInt(), getRandomInt(),
-  ]
-
-static func v4():
-  # 16 random bytes with the bytes on index 6 and 8 modified
-  var b = uuidbin()
-
-  return '%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x' % [
-	# low
-	b[0], b[1], b[2], b[3],
-
-	# mid
-	b[4], b[5],
-
-	# hi
-	b[6], b[7],
-
-	# clock
-	b[8], b[9],
-
-	# clock
-	b[10], b[11], b[12], b[13], b[14], b[15]
-  ]
+func _on_AmountlyCheckButton_pressed():
+	Result.text = ""
+	for i in range(ChosenGroup.Members.size()):
+		MembersList.get_child(i).get_node("Background/AmountInput").text = ""
+		MembersList.get_child(i).get_node("Background/ResultLabel").text = ""
+	CustomCheckButton.pressed = false
+	showAdvancedFields()
 
 
-func _on_AdvancedCheckButton_pressed():
-	if(AdvancedCheckButton.pressed):
+func _on_BackButton_pressed():
+	get_tree().change_scene("res://Scenes/Groups.tscn")
+
+
+func _on_CustomCheckButton_pressed():
+	Result.text = ""
+	for i in range(ChosenGroup.Members.size()):
+		MembersList.get_child(i).get_node("Background/AmountInput").text = ""
+		MembersList.get_child(i).get_node("Background/ResultLabel").text = ""
+	AmountlyCheckButton.pressed = false
+	showAdvancedFields()
+
+func showAdvancedFields():
+	if(AmountlyCheckButton.pressed or CustomCheckButton.pressed):
 		for i in range(ChosenGroup.Members.size()):
 			MembersList.get_child(i).get_node("Background/AmountLabel").visible = true
 			MembersList.get_child(i).get_node("Background/AmountInput").visible = true
@@ -144,7 +126,3 @@ func _on_AdvancedCheckButton_pressed():
 			MembersList.get_child(i).get_node("Background/AmountLabel").visible = false
 			MembersList.get_child(i).get_node("Background/AmountInput").text = ""
 			MembersList.get_child(i).get_node("Background/AmountInput").visible = false
-
-
-func _on_BackButton_pressed():
-	get_tree().change_scene("res://Scenes/Groups.tscn")

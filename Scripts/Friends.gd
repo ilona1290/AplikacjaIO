@@ -12,6 +12,7 @@ var SelectedCard  = "0"
 
 func _ready():
 	Friends = yield(Database.getUserFriends(Database.userID), "completed").Result
+	print(Friends)
 
 func generateSearchList():
 	for i in UserList.get_children():
