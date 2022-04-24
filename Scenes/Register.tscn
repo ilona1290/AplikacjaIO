@@ -79,17 +79,17 @@ rect_min_size = Vector2( 700, 60 )
 secret = true
 
 [node name="RegisterButton" type="Button" parent="Background"]
-margin_left = 450.0
-margin_top = 1300.0
-margin_right = 650.0
-margin_bottom = 1400.0
+margin_left = 407.0
+margin_top = 1304.0
+margin_right = 756.0
+margin_bottom = 1454.0
 text = "Zarejestruj"
 
 [node name="BackButton" type="Button" parent="Background"]
-margin_left = 830.0
+margin_left = 740.0
 margin_top = 30.0
-margin_right = 1030.0
-margin_bottom = 130.0
+margin_right = 1040.0
+margin_bottom = 180.0
 text = "Powrót"
 
 [node name="Notification" type="RichTextLabel" parent="Background"]

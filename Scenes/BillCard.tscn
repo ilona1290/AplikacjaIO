@@ -1,0 +1,108 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Fonts/Theme.tres" type="Theme" id=1]
+
+[node name="BillCard" type="MarginContainer"]
+margin_right = 1080.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 1080, 200 )
+theme = ExtResource( 1 )
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 1080.0
+margin_bottom = 200.0
+color = Color( 0.0941176, 0.435294, 0.45098, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -515.0
+margin_top = -98.0
+margin_right = -311.0
+margin_bottom = 98.0
+rect_min_size = Vector2( 700, 0 )
+
+[node name="Description" type="HBoxContainer" parent="Background/VBoxContainer"]
+margin_right = 700.0
+margin_bottom = 43.0
+
+[node name="DescriptionLabel" type="Label" parent="Background/VBoxContainer/Description"]
+margin_right = 200.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 200, 0 )
+text = "Tytuł: "
+valign = 1
+
+[node name="DescriptionValue" type="Label" parent="Background/VBoxContainer/Description"]
+margin_left = 204.0
+margin_right = 204.0
+margin_bottom = 43.0
+valign = 1
+
+[node name="Amount" type="HBoxContainer" parent="Background/VBoxContainer"]
+margin_top = 47.0
+margin_right = 700.0
+margin_bottom = 90.0
+
+[node name="AmountLabel" type="Label" parent="Background/VBoxContainer/Amount"]
+margin_right = 200.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 200, 0 )
+text = "Kwota:"
+valign = 1
+
+[node name="AmountValue" type="Label" parent="Background/VBoxContainer/Amount"]
+margin_left = 204.0
+margin_right = 204.0
+margin_bottom = 43.0
+valign = 1
+
+[node name="From" type="HBoxContainer" parent="Background/VBoxContainer"]
+margin_top = 94.0
+margin_right = 700.0
+margin_bottom = 137.0
+
+[node name="FromLabel" type="Label" parent="Background/VBoxContainer/From"]
+margin_right = 200.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 200, 0 )
+text = "Dla:"
+valign = 1
+
+[node name="FromValue" type="Label" parent="Background/VBoxContainer/From"]
+margin_left = 204.0
+margin_right = 204.0
+margin_bottom = 43.0
+valign = 1
+
+[node name="Account" type="HBoxContainer" parent="Background/VBoxContainer"]
+margin_top = 141.0
+margin_right = 700.0
+margin_bottom = 184.0
+
+[node name="AccountLabel" type="Label" parent="Background/VBoxContainer/Account"]
+margin_right = 200.0
+margin_bottom = 43.0
+rect_min_size = Vector2( 200, 0 )
+text = "Nr Konta:"
+valign = 1
+
+[node name="AccountValue" type="Label" parent="Background/VBoxContainer/Account"]
+margin_left = 204.0
+margin_right = 204.0
+margin_bottom = 43.0
+valign = 1
+
+[node name="ConfirmButton" type="Button" parent="Background"]
+visible = false
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -430.0
+margin_top = -75.0
+margin_right = -39.0
+margin_bottom = 75.0
+text = "Otrzymałem"

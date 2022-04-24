@@ -68,15 +68,15 @@ secret = true
 [node name="LoginButton" type="Button" parent="Background"]
 margin_left = 450.0
 margin_top = 1200.0
-margin_right = 650.0
-margin_bottom = 1300.0
+margin_right = 750.0
+margin_bottom = 1350.0
 text = "Zaloguj"
 
 [node name="BackButton" type="Button" parent="Background"]
-margin_left = 830.0
+margin_left = 740.0
 margin_top = 30.0
-margin_right = 1030.0
-margin_bottom = 130.0
+margin_right = 1040.0
+margin_bottom = 180.0
 text = "Powrót"
 
 [node name="Notification" type="RichTextLabel" parent="Background"]

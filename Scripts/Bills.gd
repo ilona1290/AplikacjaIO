@@ -67,8 +67,11 @@ func _on_SendButton_pressed():
 		for m in Members:
 			B["Amount"] = dividedAmount
 			B["From"] = m
+			if Database.userID == m:
+				B["IsPayed"] = 1
 			MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania " + String(B["Amount"]) + "zł"
 			allBills.append(B.duplicate())
+			B["IsPayed"] = 0
 	elif(AmountlyCheckButton.pressed):
 		var fullAmount = 0
 		var DividedAmounts = []
@@ -82,16 +85,22 @@ func _on_SendButton_pressed():
 			if(DividedAmounts[counter] != 0):
 				B["Amount"] = DividedAmounts[counter]
 				B["From"] = m
+				if Database.userID == m:
+					B["IsPayed"] = 1
 				MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania " + String(B["Amount"]) + "zł"
 				allBills.append(B.duplicate())
+				B["IsPayed"] = 0
 			counter += 1
 	else:
 		for i in ChosenGroup.Members:
 			B["Amount"] = MembersList.get_node(i).get_node("Background/AmountInput").text
 			B["From"] = i
+			if Database.userID == i:
+				B["IsPayed"] = 1
 			MembersList.get_node(i).get_node("Background/ResultLabel").text = "Do oddania " + B["Amount"] + "zł"
 			if(B["Amount"] != ""):
 				allBills.append(B.duplicate())
+			B["IsPayed"] = 0
 	Database.addBills(allBills)
 
 

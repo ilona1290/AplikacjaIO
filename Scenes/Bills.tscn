@@ -53,8 +53,8 @@ custom_constants/separation = 10
 [node name="SendButton" type="Button" parent="Background"]
 margin_left = 424.0
 margin_top = 1165.0
-margin_right = 646.0
-margin_bottom = 1256.0
+margin_right = 724.0
+margin_bottom = 1315.0
 text = "Prześlij"
 
 [node name="Notification" type="Label" parent="Background"]
@@ -70,10 +70,10 @@ margin_right = 922.0
 margin_bottom = 449.0
 
 [node name="AmountlyCheckButton" type="CheckButton" parent="Background"]
-margin_left = 885.0
-margin_top = 18.0
-margin_right = 961.0
-margin_bottom = 78.0
+margin_left = 896.0
+margin_top = -22.0
+margin_right = 972.0
+margin_bottom = 81.0
 rect_min_size = Vector2( 30, 30 )
 rect_scale = Vector2( 2, 2 )
 
@@ -85,10 +85,10 @@ margin_bottom = 100.0
 text = "Ilościowo"
 
 [node name="BackButton" type="Button" parent="Background"]
-margin_left = 427.0
-margin_top = 1287.0
-margin_right = 649.0
-margin_bottom = 1378.0
+margin_left = 424.0
+margin_top = 1344.0
+margin_right = 724.0
+margin_bottom = 1494.0
 text = "Powrót"
 
 [node name="CustomLabel" type="Label" parent="Background"]
@@ -99,9 +99,9 @@ margin_bottom = 108.0
 text = "Kwotowo"
 
 [node name="CustomCheckButton" type="CheckButton" parent="Background"]
-margin_left = 200.0
-margin_top = 25.0
-margin_right = 276.0
+margin_left = 196.0
+margin_top = -18.0
+margin_right = 272.0
 margin_bottom = 85.0
 rect_scale = Vector2( 2, 2 )
 

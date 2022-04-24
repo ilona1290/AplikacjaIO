@@ -34,9 +34,9 @@ rect_min_size = Vector2( 700, 0 )
 
 [node name="Name" type="Label" parent="Background/HBoxContainer/VBoxContainer"]
 margin_right = 700.0
-margin_bottom = 46.0
+margin_bottom = 43.0
 
 [node name="Surname" type="Label" parent="Background/HBoxContainer/VBoxContainer"]
-margin_top = 50.0
+margin_top = 47.0
 margin_right = 700.0
-margin_bottom = 96.0
+margin_bottom = 90.0

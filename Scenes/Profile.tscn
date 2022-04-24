@@ -20,15 +20,15 @@ color = Color( 0.027451, 0.572549, 0.596078, 1 )
 [node name="EditButton" type="Button" parent="Background"]
 margin_left = 450.0
 margin_top = 1600.0
-margin_right = 650.0
-margin_bottom = 1700.0
+margin_right = 750.0
+margin_bottom = 1750.0
 text = "Edytuj"
 
 [node name="BackButton" type="Button" parent="Background"]
-margin_left = 830.0
+margin_left = 740.0
 margin_top = 30.0
-margin_right = 1030.0
-margin_bottom = 130.0
+margin_right = 1040.0
+margin_bottom = 180.0
 text = "Powrót"
 
 [node name="Notification" type="RichTextLabel" parent="Background"]
@@ -182,13 +182,13 @@ margin_right = 720.0
 margin_bottom = 1280.0
 rect_min_size = Vector2( 150, 52.5 )
 rect_scale = Vector2( 1.5, 1.5 )
-window_title = "Open a File"
+window_title = "Otwórz plik"
 dialog_hide_on_ok = true
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/home/public/AplikacjaIO"
-current_path = "/home/public/AplikacjaIO/"
+current_dir = "/Users/apias/Desktop/AplikacjaIO/AplikacjaIO"
+current_path = "/Users/apias/Desktop/AplikacjaIO/AplikacjaIO/"
 
 [connection signal="pressed" from="Background/EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]

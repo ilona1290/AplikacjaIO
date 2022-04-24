@@ -210,6 +210,34 @@ func addBills(var bills : Array):
 	
 	httpResult.clear()
 
+func getBills(var id):
+	var query = {
+		"Action":"GetBills",
+		"Id":id
+	}
+
+	HTTP.request(API_URL, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, to_json(query))
+	yield(HTTP, "request_completed")
+
+	var result : Dictionary
+	result = httpResult.duplicate()
+	httpResult.clear()
+	return result
+
+func updateBills(var id):
+	var query = {
+		"Action":"UpdateBills",
+		"Id":id
+	}
+
+	HTTP.request(API_URL, ["Content-Type: application/json"], true, HTTPClient.METHOD_POST, to_json(query))
+	yield(HTTP, "request_completed")
+
+	var result : Dictionary
+	result = httpResult.duplicate()
+	httpResult.clear()
+	return result
+
 
 func test():
 	var query = {
