@@ -4,7 +4,7 @@ var GroupCardScene = preload("res://Scenes/GroupCard.tscn")
 
 onready var Notification = $Background/Notification
 
-onready var GroupList = $Background/ScrollContainer/VBoxContainer
+onready var GroupList = $Background/PanelContainer/ScrollContainer/VBoxContainer
 
 var UserGroups : Array = []
 var Members = []

@@ -4,7 +4,7 @@ extends Control
 var groupMembersScene = preload("res://Scenes/GroupMembers.tscn")
 
 var Members = []
-onready var MembersList = $Background/ScrollContainer/VBoxContainer
+onready var MembersList = $Background/PanelContainer/ScrollContainer/VBoxContainer
 onready var AmountInput = $Background/AmountInput
 onready var TitleInput = $Background/TitleInput
 onready var http : HTTPRequest = $HTTPRequest

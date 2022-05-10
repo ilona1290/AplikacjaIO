@@ -4,7 +4,7 @@ var friendCardScene = preload("res://Scenes/FriendCard.tscn")
 
 onready var PatternInput = $Background/HBoxContainer/PatternInput
 onready var Notification = $Background/Notification
-onready var UserList = $Background/ScrollContainer/VBoxContainer
+onready var UserList = $Background/PanelContainer/ScrollContainer/VBoxContainer
 
 var Friends : Array = []
 var SearchList : Array = []

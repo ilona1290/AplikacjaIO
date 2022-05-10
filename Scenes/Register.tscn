@@ -16,66 +16,69 @@ margin_right = 1077.0
 margin_bottom = 1921.0
 color = Color( 0.027451, 0.572549, 0.596078, 1 )
 
-[node name="Form" type="VBoxContainer" parent="Background"]
+[node name="RegisterForm" type="VBoxContainer" parent="Background"]
 margin_left = 50.0
 margin_top = 900.0
 margin_right = 1004.0
 margin_bottom = 1088.0
 
-[node name="Email" type="HBoxContainer" parent="Background/Form"]
-margin_right = 954.0
-margin_bottom = 60.0
+[node name="Email" type="HBoxContainer" parent="Background/RegisterForm"]
+margin_right = 1016.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 0, 60 )
 
-[node name="EmailLabel" type="Label" parent="Background/Form/Email"]
+[node name="EmailLabel" type="Label" parent="Background/RegisterForm/Email"]
 margin_right = 250.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 250, 60 )
 rect_pivot_offset = Vector2( 291, 531 )
 text = "Email"
 
-[node name="EmailInput" type="LineEdit" parent="Background/Form/Email"]
+[node name="EmailInput" type="LineEdit" parent="Background/RegisterForm/Email"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 700, 60 )
+align = 1
 
-[node name="Password" type="HBoxContainer" parent="Background/Form"]
-margin_top = 64.0
-margin_right = 954.0
-margin_bottom = 124.0
+[node name="Password" type="HBoxContainer" parent="Background/RegisterForm"]
+margin_top = 70.0
+margin_right = 1016.0
+margin_bottom = 136.0
 rect_min_size = Vector2( 0, 60 )
 
-[node name="PasswordLabel" type="Label" parent="Background/Form/Password"]
+[node name="PasswordLabel" type="Label" parent="Background/RegisterForm/Password"]
 margin_right = 250.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 250, 60 )
 text = "Hasło"
 
-[node name="PasswordInput" type="LineEdit" parent="Background/Form/Password"]
+[node name="PasswordInput" type="LineEdit" parent="Background/RegisterForm/Password"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 700, 60 )
+align = 1
 secret = true
 
-[node name="ConfirmPassword" type="HBoxContainer" parent="Background/Form"]
-margin_top = 128.0
-margin_right = 954.0
-margin_bottom = 188.0
+[node name="ConfirmPassword" type="HBoxContainer" parent="Background/RegisterForm"]
+margin_top = 140.0
+margin_right = 1016.0
+margin_bottom = 206.0
 rect_min_size = Vector2( 0, 60 )
 
-[node name="ConfirmPasswordLabel" type="Label" parent="Background/Form/ConfirmPassword"]
-margin_right = 250.0
-margin_bottom = 60.0
+[node name="ConfirmPasswordLabel" type="Label" parent="Background/RegisterForm/ConfirmPassword"]
+margin_right = 312.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 250, 60 )
 text = "Powtórz hasło"
 
-[node name="ConfirmPasswordInput" type="LineEdit" parent="Background/Form/ConfirmPassword"]
-margin_left = 254.0
-margin_right = 954.0
-margin_bottom = 60.0
+[node name="ConfirmPasswordInput" type="LineEdit" parent="Background/RegisterForm/ConfirmPassword"]
+margin_left = 316.0
+margin_right = 1016.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 700, 60 )
+align = 1
 secret = true
 
 [node name="RegisterButton" type="Button" parent="Background"]
@@ -85,13 +88,6 @@ margin_right = 756.0
 margin_bottom = 1454.0
 text = "Zarejestruj"
 
-[node name="BackButton" type="Button" parent="Background"]
-margin_left = 740.0
-margin_top = 30.0
-margin_right = 1040.0
-margin_bottom = 180.0
-text = "Powrót"
-
 [node name="Notification" type="RichTextLabel" parent="Background"]
 margin_left = 309.0
 margin_top = 1188.0
@@ -99,4 +95,3 @@ margin_right = 1009.0
 margin_bottom = 1279.0
 
 [connection signal="pressed" from="Background/RegisterButton" to="." method="_on_RegisterButton_pressed"]
-[connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]

@@ -28,12 +28,12 @@ rect_pivot_offset = Vector2( -877, 203 )
 
 [node name="Email" type="HBoxContainer" parent="Background/Form"]
 margin_right = 954.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 0, 60 )
 
 [node name="EmailLabel" type="Label" parent="Background/Form/Email"]
 margin_right = 250.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 250, 60 )
 rect_pivot_offset = Vector2( 291, 531 )
 text = "Email"
@@ -42,18 +42,19 @@ valign = 1
 [node name="EmailInput" type="LineEdit" parent="Background/Form/Email"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 700, 60 )
+align = 1
 
 [node name="Password" type="HBoxContainer" parent="Background/Form"]
-margin_top = 64.0
+margin_top = 70.0
 margin_right = 954.0
-margin_bottom = 124.0
+margin_bottom = 136.0
 rect_min_size = Vector2( 0, 60 )
 
 [node name="PasswordLabel" type="Label" parent="Background/Form/Password"]
 margin_right = 250.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 250, 60 )
 text = "Hasło"
 valign = 1
@@ -61,8 +62,9 @@ valign = 1
 [node name="PasswordInput" type="LineEdit" parent="Background/Form/Password"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
+margin_bottom = 66.0
 rect_min_size = Vector2( 700, 60 )
+align = 1
 secret = true
 
 [node name="LoginButton" type="Button" parent="Background"]
@@ -72,13 +74,6 @@ margin_right = 750.0
 margin_bottom = 1350.0
 text = "Zaloguj"
 
-[node name="BackButton" type="Button" parent="Background"]
-margin_left = 740.0
-margin_top = 30.0
-margin_right = 1040.0
-margin_bottom = 180.0
-text = "Powrót"
-
 [node name="Notification" type="RichTextLabel" parent="Background"]
 margin_left = 309.0
 margin_top = 1100.0
@@ -86,4 +81,3 @@ margin_right = 1009.0
 margin_bottom = 1180.0
 
 [connection signal="pressed" from="Background/LoginButton" to="." method="_on_LoginButton_pressed"]
-[connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]

@@ -5,7 +5,7 @@ var friendCardScene = preload("res://Scenes/FriendCard.tscn")
 onready var NameInput = $Background/NameInput 
 onready var Notification = $Background/Notification
 
-onready var FriendList = $Background/ScrollContainer/VBoxContainer
+onready var FriendList = $PanelContainer/ScrollContainer/VBoxContainer
 
 var FriendsToShow : Array = []
 var NewGroupFriends : Array = []

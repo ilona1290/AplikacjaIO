@@ -14,13 +14,23 @@ margin_right = 1080.0
 margin_bottom = 1920.0
 color = Color( 0.027451, 0.572549, 0.596078, 1 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Background"]
-margin_left = 18.0
-margin_top = 293.0
-margin_right = 1061.0
-margin_bottom = 1593.0
+[node name="PanelContainer" type="PanelContainer" parent="Background"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -505.0
+margin_top = 290.0
+margin_right = 505.0
+margin_bottom = 1600.0
+rect_min_size = Vector2( 1000, 1300 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/ScrollContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Background/PanelContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1005.0
+margin_bottom = 1305.0
+rect_min_size = Vector2( 1000, 1300 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/PanelContainer/ScrollContainer"]
 
 [node name="BackButton" type="Button" parent="Background"]
 margin_left = 740.0

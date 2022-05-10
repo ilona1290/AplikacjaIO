@@ -18,10 +18,14 @@ margin_bottom = 1920.0
 color = Color( 0.027451, 0.572549, 0.596078, 1 )
 
 [node name="EditButton" type="Button" parent="Background"]
-margin_left = 450.0
-margin_top = 1600.0
-margin_right = 750.0
-margin_bottom = 1750.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -150.0
+margin_top = -350.0
+margin_right = 150.0
+margin_bottom = -200.0
 text = "Edytuj"
 
 [node name="BackButton" type="Button" parent="Background"]
@@ -41,29 +45,29 @@ custom_fonts/normal_font = ExtResource( 2 )
 [node name="Avatar" type="TextureRect" parent="Background"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -161.5
-margin_top = 200.0
-margin_right = 161.5
-margin_bottom = 480.0
+margin_left = -320.0
+margin_top = 250.0
+margin_right = 320.0
+margin_bottom = 890.0
 texture = SubResource( 1 )
 expand = true
 
 [node name="Informations" type="VBoxContainer" parent="Background"]
 margin_left = 50.0
-margin_top = 950.0
+margin_top = 1000.0
 margin_right = 1013.0
-margin_bottom = 1234.0
+margin_bottom = 1460.0
 rect_min_size = Vector2( 950, 0 )
 custom_constants/separation = 20
 
 [node name="Name" type="HBoxContainer" parent="Background/Informations"]
 margin_right = 963.0
-margin_bottom = 60.0
+margin_bottom = 100.0
 
 [node name="NameLabel" type="Label" parent="Background/Informations/Name"]
 margin_right = 250.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 250, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 250, 100 )
 rect_pivot_offset = Vector2( 291, 531 )
 text = "Imie"
 valign = 1
@@ -72,29 +76,31 @@ valign = 1
 visible = false
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 700, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( 1884, 342 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 
 [node name="NameValue" type="Label" parent="Background/Informations/Name"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 700, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( 1884, 342 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 valign = 1
 
 [node name="Surname" type="HBoxContainer" parent="Background/Informations"]
-margin_top = 80.0
+margin_top = 120.0
 margin_right = 963.0
-margin_bottom = 140.0
+margin_bottom = 220.0
 
 [node name="SurnameLabel" type="Label" parent="Background/Informations/Surname"]
 margin_right = 250.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 250, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 250, 100 )
 text = "Nazwisko"
 valign = 1
 
@@ -102,93 +108,95 @@ valign = 1
 visible = false
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 700, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 
 [node name="SurnameValue" type="Label" parent="Background/Informations/Surname"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 700, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 valign = 1
 
 [node name="BankAccount" type="HBoxContainer" parent="Background/Informations"]
-margin_top = 160.0
+margin_top = 240.0
 margin_right = 963.0
-margin_bottom = 220.0
+margin_bottom = 340.0
 
 [node name="BankAccountLabel" type="Label" parent="Background/Informations/BankAccount"]
 margin_right = 250.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 250, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 250, 100 )
 rect_pivot_offset = Vector2( -756, 263 )
 text = "Nr konta"
 valign = 1
 
 [node name="BankAccountInput" type="LineEdit" parent="Background/Informations/BankAccount"]
 visible = false
-margin_left = 250.0
-margin_top = 35.0
-margin_right = 950.0
-margin_bottom = 91.0
-rect_min_size = Vector2( 700, 60 )
+margin_left = 254.0
+margin_right = 954.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 
 [node name="BankAccountValue" type="Label" parent="Background/Informations/BankAccount"]
 margin_left = 254.0
 margin_right = 954.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 700, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( -1015, 263 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 valign = 1
 
 [node name="Telephone" type="HBoxContainer" parent="Background/Informations"]
-margin_top = 240.0
+margin_top = 360.0
 margin_right = 963.0
-margin_bottom = 300.0
+margin_bottom = 460.0
 
 [node name="TelephoneLabel" type="Label" parent="Background/Informations/Telephone"]
 margin_right = 250.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 250, 60 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 250, 100 )
 rect_pivot_offset = Vector2( -756, 263 )
 text = "Nr telefonu"
 valign = 1
 
 [node name="TelephoneInput" type="LineEdit" parent="Background/Informations/Telephone"]
 visible = false
-margin_left = 250.0
-margin_top = 136.0
-margin_right = 950.0
-margin_bottom = 192.0
-rect_min_size = Vector2( 700, 56 )
+margin_left = 254.0
+margin_right = 954.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 
 [node name="TelephoneValue" type="Label" parent="Background/Informations/Telephone"]
 margin_left = 254.0
-margin_top = 2.0
 margin_right = 954.0
-margin_bottom = 58.0
-rect_min_size = Vector2( 700, 56 )
+margin_bottom = 100.0
+rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( -1015, 263 )
 custom_fonts/font = ExtResource( 2 )
+align = 1
 valign = 1
 
 [node name="AvatarFileDialog" type="FileDialog" parent="."]
-margin_right = 720.0
-margin_bottom = 1280.0
+margin_right = 1080.0
+margin_bottom = 1920.0
 rect_min_size = Vector2( 150, 52.5 )
-rect_scale = Vector2( 1.5, 1.5 )
 window_title = "Otwórz plik"
 dialog_hide_on_ok = true
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/Users/apias/Desktop/AplikacjaIO/AplikacjaIO"
-current_path = "/Users/apias/Desktop/AplikacjaIO/AplikacjaIO/"
+current_dir = "/Users/StudentPL/Desktop/AplikacjaIO"
+current_path = "/Users/StudentPL/Desktop/AplikacjaIO/"
 
 [connection signal="pressed" from="Background/EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]
