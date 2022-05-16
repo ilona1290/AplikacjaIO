@@ -53,16 +53,18 @@ texture = SubResource( 1 )
 expand = true
 
 [node name="Informations" type="VBoxContainer" parent="Background"]
-margin_left = 50.0
+margin_left = 40.0
 margin_top = 1000.0
-margin_right = 1013.0
+margin_right = 1040.0
 margin_bottom = 1460.0
 rect_min_size = Vector2( 950, 0 )
+size_flags_horizontal = 3
 custom_constants/separation = 20
 
 [node name="Name" type="HBoxContainer" parent="Background/Informations"]
-margin_right = 963.0
+margin_right = 1000.0
 margin_bottom = 100.0
+size_flags_horizontal = 3
 
 [node name="NameLabel" type="Label" parent="Background/Informations/Name"]
 margin_right = 250.0
@@ -79,23 +81,26 @@ margin_right = 954.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( 1884, 342 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="NameValue" type="Label" parent="Background/Informations/Name"]
 margin_left = 254.0
-margin_right = 954.0
+margin_right = 1000.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( 1884, 342 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
 
 [node name="Surname" type="HBoxContainer" parent="Background/Informations"]
 margin_top = 120.0
-margin_right = 963.0
+margin_right = 1000.0
 margin_bottom = 220.0
+size_flags_horizontal = 3
 
 [node name="SurnameLabel" type="Label" parent="Background/Informations/Surname"]
 margin_right = 250.0
@@ -110,22 +115,25 @@ margin_left = 254.0
 margin_right = 954.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="SurnameValue" type="Label" parent="Background/Informations/Surname"]
 margin_left = 254.0
-margin_right = 954.0
+margin_right = 1000.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
 
 [node name="BankAccount" type="HBoxContainer" parent="Background/Informations"]
 margin_top = 240.0
-margin_right = 963.0
+margin_right = 1000.0
 margin_bottom = 340.0
+size_flags_horizontal = 3
 
 [node name="BankAccountLabel" type="Label" parent="Background/Informations/BankAccount"]
 margin_right = 250.0
@@ -141,23 +149,26 @@ margin_left = 254.0
 margin_right = 954.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="BankAccountValue" type="Label" parent="Background/Informations/BankAccount"]
 margin_left = 254.0
-margin_right = 954.0
+margin_right = 1000.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( -1015, 263 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
 
 [node name="Telephone" type="HBoxContainer" parent="Background/Informations"]
 margin_top = 360.0
-margin_right = 963.0
+margin_right = 1000.0
 margin_bottom = 460.0
+size_flags_horizontal = 3
 
 [node name="TelephoneLabel" type="Label" parent="Background/Informations/Telephone"]
 margin_right = 250.0
@@ -173,15 +184,17 @@ margin_left = 254.0
 margin_right = 954.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="TelephoneValue" type="Label" parent="Background/Informations/Telephone"]
 margin_left = 254.0
-margin_right = 954.0
+margin_right = 1000.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 700, 100 )
 rect_pivot_offset = Vector2( -1015, 263 )
+size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 valign = 1
@@ -195,8 +208,8 @@ dialog_hide_on_ok = true
 mode = 0
 access = 2
 filters = PoolStringArray( "*.png" )
-current_dir = "/Users/StudentPL/Desktop/AplikacjaIO"
-current_path = "/Users/StudentPL/Desktop/AplikacjaIO/"
+current_dir = "/po/AplikacjaIO"
+current_path = "/po/AplikacjaIO/"
 
 [connection signal="pressed" from="Background/EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="Background/BackButton" to="." method="_on_BackButton_pressed"]

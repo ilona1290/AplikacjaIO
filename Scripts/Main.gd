@@ -7,6 +7,8 @@ onready var registerEmail : LineEdit = $Background/RegisterForm/Email/EmailInput
 onready var registerPassword : LineEdit = $Background/RegisterForm/Password/PasswordInput
 onready var registerConfirm : LineEdit = $Background/RegisterForm/ConfirmPassword/ConfirmPasswordInput
 
+const emailRegex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+
 func _ready():
 	if Database.userID == "":
 		$Background/LoginForm.visible = true
@@ -31,6 +33,14 @@ func _ready():
 		$Background/Label.visible = true
 		$AnimationPlayer.play("New Anim")
 
+func isEmailValid(email) -> bool:
+	var regex = RegEx.new()
+	regex.compile(emailRegex)
+	return regex.search(email)
+
+func isPasswordVaild(password) -> bool:
+	return true
+
 func _on_RegisterButton_pressed():
 	if registerPassword.text != registerConfirm.text:
 		#notification.text = "Hasła nie są identyczne"
@@ -38,15 +48,28 @@ func _on_RegisterButton_pressed():
 	elif registerEmail.text.empty() or registerPassword.text.empty():
 		#notification.text = "Nieprawidłowy e-mail lub hasło"
 		return
+	if !isEmailValid(registerEmail.text):
+		print("Błędny email")
+		return
+		
 	yield(Database.register(registerEmail.text, registerPassword.text), "completed")
-	get_tree().change_scene("res://Scenes/Login.tscn")
+	get_tree().change_scene("res://Scenes/Main.tscn")
 
 func _on_LoginButton_pressed():
 	if loginEmail.text.empty() or loginPassword.text.empty():
 		#notification.text = "Nieprawidłowy e-mail lub hasło"
 		return
-	yield(Database.login(loginEmail.text, loginPassword.text), "completed")
+	var x = yield(Database.login(loginEmail.text, loginPassword.text), "completed")
 	get_tree().change_scene("res://Scenes/Main.tscn")
+	"""
+	match(x["Message"]):
+		"USER_DOESNT_EXISTS":
+			print("Nie ma użytkownika o tym emailu")
+		"WRONG_PASS":
+			print("Hasło jest błędne")
+		"OK":
+			get_tree().change_scene("res://Scenes/Main.tscn")
+			"""
 
 func _on_ProfileButton_pressed():
 	get_tree().change_scene("res://Scenes/Profile.tscn")

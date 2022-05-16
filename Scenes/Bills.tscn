@@ -54,15 +54,15 @@ placeholder_text = "Tytuł"
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -500.0
-margin_top = 400.0
+margin_top = 500.0
 margin_right = 500.0
-margin_bottom = 1460.0
-rect_min_size = Vector2( 1000, 1050 )
+margin_bottom = 1450.0
+rect_min_size = Vector2( 1000, 950 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/PanelContainer"]
 margin_right = 1000.0
-margin_bottom = 1060.0
-rect_min_size = Vector2( 700, 1050 )
+margin_bottom = 950.0
+rect_min_size = Vector2( 700, 950 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background/PanelContainer/ScrollContainer"]
 custom_constants/separation = 10
@@ -81,9 +81,9 @@ margin_right = 783.0
 margin_bottom = 1147.0
 
 [node name="Result" type="Label" parent="Background"]
-margin_left = 132.0
+margin_left = 50.0
 margin_top = 376.0
-margin_right = 922.0
+margin_right = 1028.0
 margin_bottom = 449.0
 
 [node name="AmountlyCheckButton" type="CheckButton" parent="Background"]

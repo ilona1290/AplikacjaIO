@@ -24,10 +24,8 @@ margin_bottom = 1600.0
 rect_min_size = Vector2( 1000, 1300 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/PanelContainer"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 1005.0
-margin_bottom = 1305.0
+margin_right = 1010.0
+margin_bottom = 1310.0
 rect_min_size = Vector2( 1000, 1300 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Background/PanelContainer/ScrollContainer"]

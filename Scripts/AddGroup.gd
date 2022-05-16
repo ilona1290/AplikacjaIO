@@ -26,6 +26,13 @@ func generateFriendList():
 		FriendList.add_child(tmpFriendCard)
 
 func _on_AddGroupButton_pressed():
+	if NameInput.text == "":
+		Notification.text = "Nadaj grupię nazwę"
+		return
+	if NewGroupFriends.empty():
+		Notification.text = "Wybierz znajomych do grupy"
+		return
+	
 	# Visual deselecting cards
 	for card in NewGroupFriends:
 		FriendList.get_node(card).modulate = Color("#ffffff")
@@ -33,6 +40,7 @@ func _on_AddGroupButton_pressed():
 	NewGroupFriends.append(Database.userID)
 	yield(Database.createNewGroup(NameInput.text, NewGroupFriends), "completed")
 	NameInput.text = ""
+	Notification = "Utworzono grupę"
 	NewGroupFriends.clear()
 
 

@@ -33,6 +33,19 @@ var information_sent = false
 
 var UserAccount : UserProfile = UserProfile.new()
 
+const bankRegex = "^[a-zA-Z]{2}[0-9]{26}$"
+const phoneRegex = "^(\\+[0-9]{2})?[0-9]{9}$"
+
+func isBankValid(bank) -> bool:
+	var regex = RegEx.new()
+	regex.compile(bankRegex)
+	return regex.search(bank) != null
+
+func isPhoneValid(phone) -> bool:
+	var regex = RegEx.new()
+	regex.compile(phoneRegex)
+	return regex.search(phone) != null
+
 func _ready():
 	# Loading data from database to UserAccount variable
 	UserAccount.loadFromDictionary(yield(Database.getProfiles([Database.userID]), "completed").Result[Database.userID])
@@ -77,6 +90,13 @@ func _on_EditButton_pressed():
 		EditMode = true
 		EditButton.text = "Zapisz"
 	else:
+		if !isPhoneValid(TelephoneInput.text):
+			Notification.text = "Błedny numer telefonu"
+			return
+		if !isBankValid(BankAccountInput.text):
+			Notification.text = "Błędny numer konta"
+			return
+			
 		NameInput.visible = false
 		SurnameInput.visible = false
 		BankAccountInput.visible = false
@@ -86,7 +106,6 @@ func _on_EditButton_pressed():
 		SurnameValue.visible = true
 		BankAccountValue.visible = true
 		TelephoneValue.visible = true
-		
 		#Saving changes
 		saveProfile()
 		loadProfile()

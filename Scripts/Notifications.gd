@@ -17,18 +17,21 @@ func _ready() -> void:
 		#if b["is_payed"] == "0":
 			var tmpBillCard = BillCardScene.instance()
 			tmpBillCard.get_node("Background/VBoxContainer/Description/DescriptionValue").text = b["description"]
-			tmpBillCard.get_node("Background/VBoxContainer/Amount/AmountValue").text = b["amount"]
+			tmpBillCard.get_node("Background/VBoxContainer/Amount/AmountValue").text = "%.2f zł" % float(b["amount"])
 			tmpBillCard.get_node("Background/VBoxContainer/From/FromValue").text = r[b["from_id"]].Name + " " + r[b["from_id"]].Surname
 			tmpBillCard.get_node("Background/VBoxContainer/Account/AccountValue").text = r[b["from_id"]].Bank
+			tmpBillCard.get_node("Background/VBoxContainer/Description/DateValue").text = b["date"]
 			tmpBillCard.name = b["id_bill"]
 			if b["from_id"] != Database.userID:
 				tmpBillCard.get_node("Background/VBoxContainer/Account").visible = false
 				tmpBillCard.get_node("Background/VBoxContainer/From/FromLabel").text = "Od:"
 				tmpBillCard.get_node("Background/ConfirmButton").visible = true
 				tmpBillCard.get_node("Background/ConfirmButton").connect("pressed", self, "_onPressConfirmButton", [b["id_bill"]])
+				tmpBillCard.rect_min_size.y = 500
 			if b["is_payed"] == "1":
 				tmpBillCard.get_node("Background").color = Color(0, 0.4, 0, 1)
 				tmpBillCard.get_node("Background/ConfirmButton").visible = false
+				tmpBillCard.rect_min_size.y = 325
 			else:
 				tmpBillCard.get_node("Background").color = Color(0.4, 0, 0, 1)
 			a.add_child(tmpBillCard)

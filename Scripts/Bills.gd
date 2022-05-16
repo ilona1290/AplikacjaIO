@@ -13,6 +13,8 @@ onready var Result = $Background/Result
 onready var AmountlyCheckButton = $Background/AmountlyCheckButton
 onready var CustomCheckButton = $Background/CustomCheckButton
 
+var t
+
 func _ready():
 	print(ChosenGroup.Name)
 	print(ChosenGroup.Members)
@@ -36,7 +38,8 @@ func updateAmount(a):
 	if(CustomCheckButton.pressed):
 		for i in ChosenGroup.Members:
 			fullAmount -= float(MembersList.get_node(i).get_node("Background/AmountInput").text)
-		Result.text = "Pozostało " + String(fullAmount) + "zl"
+		Result.text = "Pozostało %.2f zł" % fullAmount
+		t = fullAmount
 
 func _onPressMembersCard(event, name):
 	if event is InputEventMouseButton:
@@ -53,6 +56,17 @@ func _onPressMembersCard(event, name):
 
 
 func _on_SendButton_pressed():
+	if TitleInput.text == "":
+		print("Ustaw tytuł")
+		return
+	if AmountInput.text == "":
+		print("Ustaw kwotę")
+		return
+	if Members.empty():
+		print("Zaznacz kogoś")
+		return
+	
+	
 	var allBills = []
 	var B = {}
 	B["Description"] = TitleInput.text
@@ -60,16 +74,22 @@ func _on_SendButton_pressed():
 	B["IsPayed"] = 0
 	
 	var amount = float(AmountInput.text)
+	
+	var rest : float = amount
+	
 	var dividedAmount
 	var result = ""
 	if(!AmountlyCheckButton.pressed and !CustomCheckButton.pressed):
 		dividedAmount = stepify(float(amount / Members.size()), 0.01)
 		for m in Members:
 			B["Amount"] = dividedAmount
+			rest -= dividedAmount
 			B["From"] = m
+			MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania %.2f zł" % B["Amount"]
 			if Database.userID == m:
-				B["IsPayed"] = 1
-			MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania " + String(B["Amount"]) + "zł"
+				MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania %.2f zł" % (B["Amount"] + rest)
+				continue
+				#B["IsPayed"] = 1
 			allBills.append(B.duplicate())
 			B["IsPayed"] = 0
 	elif(AmountlyCheckButton.pressed):
@@ -84,23 +104,31 @@ func _on_SendButton_pressed():
 		for m in ChosenGroup.Members:
 			if(DividedAmounts[counter] != 0):
 				B["Amount"] = DividedAmounts[counter]
+				rest -= DividedAmounts[counter]
 				B["From"] = m
+				MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania %.2f zł" % B["Amount"]
 				if Database.userID == m:
-					B["IsPayed"] = 1
-				MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania " + String(B["Amount"]) + "zł"
+					MembersList.get_node(m).get_node("Background/ResultLabel").text = "Do oddania %.2f zł" % (B["Amount"] + rest)
+					continue
+					#B["IsPayed"] = 1
 				allBills.append(B.duplicate())
 				B["IsPayed"] = 0
 			counter += 1
 	else:
+		if t != 0:
+			print("Rozdziel całą kwotę")
+			return
 		for i in ChosenGroup.Members:
-			B["Amount"] = MembersList.get_node(i).get_node("Background/AmountInput").text
+			B["Amount"] = float(MembersList.get_node(i).get_node("Background/AmountInput").text)
 			B["From"] = i
+			MembersList.get_node(i).get_node("Background/ResultLabel").text = "Do oddania %.2f zł" % B["Amount"]
 			if Database.userID == i:
-				B["IsPayed"] = 1
-			MembersList.get_node(i).get_node("Background/ResultLabel").text = "Do oddania " + B["Amount"] + "zł"
-			if(B["Amount"] != ""):
+				continue
+				#B["IsPayed"] = 1
+			if(B["Amount"] != 0):
 				allBills.append(B.duplicate())
 			B["IsPayed"] = 0
+			
 	Database.addBills(allBills)
 
 

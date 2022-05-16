@@ -20,9 +20,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -200.0
-margin_top = -520.0
+margin_top = -420.0
 margin_right = 228.0
-margin_bottom = -370.0
+margin_bottom = -270.0
 text = "Utwórz grupę"
 
 [node name="NameLabel" type="Label" parent="Background"]
@@ -47,16 +47,23 @@ placeholder_text = "Nazwa"
 
 [node name="BackButton" type="Button" parent="Background"]
 margin_left = 390.0
-margin_top = 1600.0
+margin_top = 1700.0
 margin_right = 690.0
-margin_bottom = 1750.0
+margin_bottom = 1850.0
 text = "Powrót"
 
 [node name="Notification" type="Label" parent="Background"]
-margin_left = 450.0
-margin_top = 1240.0
-margin_right = 850.0
-margin_bottom = 1306.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -488.0
+margin_top = -545.0
+margin_right = 488.0
+margin_bottom = -479.0
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+align = 1
+valign = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_left = 0.5

@@ -27,6 +27,7 @@ margin_left = 732.0
 margin_top = 5.0
 margin_right = 850.0
 margin_bottom = 66.0
+align = 1
 
 [node name="AmountLabel" type="Label" parent="Background"]
 margin_left = 620.0
